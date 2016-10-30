@@ -1,0 +1,41 @@
+{
+  "version": "v1.0.0",
+  "sources": [
+
+    {"type": "http", "url": "http://ipecho.net/plain", "weight": 1.0},
+    {"type": "http", "url": "http://inet-ip.info/", "weight": 1.0},
+    {"type": "http", "url": "http://globalip.me/?ip", "weight": 1.0},
+    {"type": "http", "url": "http://eth0.me/", "weight": 1.0},
+    {"type": "http", "url": "http://ip.toshimaru.net/", "weight": 1.0},
+    {"type": "http", "url": "http://ipcheck.ieserver.net/", "weight": 1.0},
+    {"type": "http", "url": "http://ident.me/", "weight": 1.0},
+    {"type": "http", "url": "http://wgetip.com/", "weight": 1.0},
+    {"type": "http", "url": "http://bot.whatismyipaddress.com/", "weight": 1.0},
+    {"type": "http", "url": "http://ipof.in/txt", "weight": 1.0},
+    {"type": "http", "url": "http://ifconfig.me/", "weight": 1.0},
+    {"type": "http", "url": "http://smart-ip.net/myip", "weight": 1.0},
+
+    {"type": "http", "url": "http://whatismyip.akamai.com/", "weight": 1.5},
+    {"type": "http", "url": "http://checkip.amazonaws.com/", "weight": 1.5},
+
+    {"type": "https", "url": "https://4.ifcfg.me/", "weight": 3.0},
+    {"type": "https", "url": "https://ip.tyk.nu/", "weight": 3.0},
+    {"type": "https", "url": "https://tnx.nl/ip", "weight": 3.0},
+    {"type": "https", "url": "https://l2.io/ip"},
+    {"type": "https", "url": "https://api.ipify.org/", "weight": 3.0},
+    {"type": "https", "url": "https://myexternalip.com/raw", "weight": 3.0},
+    {"type": "https", "url": "https://icanhazip.com", "weight": 3.0},
+    {"type": "https", "url": "https://ifcfg.me/", "weight": 3.0},
+    {"type": "https", "url": "https://shtuff.it/myip/short/", "weight": 3.0},
+    {"type": "https", "url": "https://ifconfig.io/", "weight": 3.0},
+
+    {"type": "https", "url": "https://wtfismyip.com/text", "weight": 3.0},
+    {"type": "https", "url": "https://ip.appspot.com/", "weight": 3.0},
+
+    {"type": "dns", "name": "myip.opendns.com.", "server": "resolver1.opendns.com:53", "weight": 2.0},
+		{"type": "dns", "name": "myip.opendns.com.", "server": "resolver2.opendns.com:53", "weight": 2.0},
+		{"type": "dns", "name": "myip.opendns.com.", "server": "resolver3.opendns.com:53", "weight": 2.0},
+		{"type": "dns", "name": "myip.opendns.com.", "server": "resolver4.opendns.com:53", "weight": 2.0}
+
+  ]
+}
