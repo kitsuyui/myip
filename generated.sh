@@ -4,7 +4,7 @@ set -o pipefail
 
 (
 xargs -L 1 -I % -P 26 sh -c \
-'curl -fsSL % 2>/dev/null | tr -d "\n" ; printf "\n"' \
+'curl -fsSL -m 1 % 2>/dev/null | tr -d "\n" ; printf "\n"' \
 <<'EOT'
 http://ipecho.net/plain
 http://inet-ip.info/

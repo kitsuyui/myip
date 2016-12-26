@@ -36,6 +36,7 @@ type HTTPDetector struct {
 type DNSDetector struct {
 	LookupDomainName string
 	Resolver         string
+	Timeout          time.Duration
 }
 
 // IPRetrievable ...
@@ -103,6 +104,7 @@ func (p HTTPDetector) RetrieveIP() (net.IP, error) {
 func (p DNSDetector) RetrieveIP() (net.IP, error) {
 	c := dns.Client{}
 	m := dns.Msg{}
+	c.Timeout = p.Timeout
 	m.SetQuestion(p.LookupDomainName, dns.TypeA)
 	result, _, err := c.Exchange(&m, p.Resolver)
 	if err != nil {
@@ -145,7 +147,13 @@ func NewIPRetrievableFromJSON(s *simplejson.Json) (IPRetrievable, error) {
 	} else if retrievingType == "dns" {
 		name := s.Get("name").MustString()
 		server := s.Get("server").MustString()
-		return &DNSDetector{name, server}, nil
+		var timeout time.Duration
+		if timeoutP, err := s.Get("timeout").Float64(); err == nil {
+			timeout = time.Duration(timeoutP) * time.Second
+		} else {
+			timeout = defaultTimeout
+		}
+		return &DNSDetector{name, server, timeout}, nil
 	}
 	return nil, &ConfigError{"type error"}
 }

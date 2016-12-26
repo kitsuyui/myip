@@ -17,7 +17,7 @@ print('(')
 
 print("""\
 xargs -L 1 -I % -P {} sh -c \\
-'curl -fsSL % 2>/dev/null | tr -d "\\n" ; printf "\\n"' \\
+'curl -fsSL -m 1 % 2>/dev/null | tr -d "\\n" ; printf "\\n"' \\
 <<'EOT'""".format(len(http)))
 
 for url in http:
