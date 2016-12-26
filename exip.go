@@ -216,6 +216,9 @@ func pickMapMaxItem(m map[string]float64) (string, float64) {
 
 func main() {
 	retrievables, err := defaultSettings()
+	if err != nil {
+		log.Fatal("config error")
+	}
 	sip, err := pickupMaxScore(retrievables)
 	if err == nil && sip.Score >= 0.5 {
 		fmt.Print(sip.IP.String())
