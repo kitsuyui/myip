@@ -17,12 +17,14 @@ Choose your OS here: https://github.com/kitsuyui/go-myip/releases
 # Build
 
 ```console
+$ go get github.com/jteeuwen/go-bindata/...
 $ go generate
+$ go get -d ./...
 $ go build
 ```
 
 ## with Docker
 
 ```console
-$ docker run --rm -v "$(pwd)":/myip -w /myip tcnksm/gox sh -c "go get -d ./... && gox -ldflags '-w -s'"
+$ docker run --rm -v "$(pwd)":/myip -w /myip tcnksm/gox sh -c "./build.sh"
 ```
