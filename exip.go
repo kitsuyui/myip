@@ -1,46 +1,55 @@
 package main
 
 import (
-	"./defaults"
-	"github.com/bitly/go-simplejson"
-	"github.com/miekg/dns"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"os"
 	"strings"
 	"sync"
 	"time"
+
+	"./defaults"
+	"github.com/bitly/go-simplejson"
+	"github.com/miekg/dns"
 )
 
 //go:generate go-bindata -prefix "data/" -pkg defaults -o defaults/defaults.go data/...
 
 const defaultTimeout time.Duration = time.Millisecond * 2000
 
+// ScoredIP ...
 type ScoredIP struct {
 	IP    net.IP
 	Score float64
 }
 
+// HTTPDetector ...
 type HTTPDetector struct {
 	URL     string
 	Timeout time.Duration
 }
 
+// DNSDetector ...
 type DNSDetector struct {
 	LookupDomainName string
 	Resolver         string
 }
 
+// IPRetrievable ...
 type IPRetrievable interface {
 	RetrieveIP() (net.IP, error)
 }
 
+// ScoredIPRetrievable ...
 type ScoredIPRetrievable struct {
 	IPRetrievable
 	Weight float64
 }
 
+// NotRetrievedError ...
 type NotRetrievedError struct {
 	Message string
 }
@@ -52,6 +61,7 @@ func (n NotRetrievedError) Error() string {
 	return "No Answer"
 }
 
+// ConfigError ...
 type ConfigError struct {
 	Message string
 }
@@ -63,11 +73,13 @@ func (c ConfigError) Error() string {
 	return "ConfigError"
 }
 
+// RetriveIPWithScoring ...
 func (p ScoredIPRetrievable) RetriveIPWithScoring() (*ScoredIP, error) {
 	ip, err := p.RetrieveIP()
 	return &ScoredIP{ip, p.Weight}, err
 }
 
+// RetrieveIP ...
 func (p HTTPDetector) RetrieveIP() (net.IP, error) {
 	client := http.Client{Timeout: p.Timeout}
 	resp, err := client.Get(p.URL)
@@ -87,6 +99,7 @@ func (p HTTPDetector) RetrieveIP() (net.IP, error) {
 	return ip, nil
 }
 
+// RetrieveIP ...
 func (p DNSDetector) RetrieveIP() (net.IP, error) {
 	c := dns.Client{}
 	m := dns.Msg{}
@@ -105,6 +118,7 @@ func (p DNSDetector) RetrieveIP() (net.IP, error) {
 	return arecord.A, nil
 }
 
+// NewScoredIPRetrievableFromJSON ...
 func NewScoredIPRetrievableFromJSON(s *simplejson.Json) (*ScoredIPRetrievable, error) {
 	weight, err := s.Get("weight").Float64()
 	if err != nil {
@@ -116,6 +130,7 @@ func NewScoredIPRetrievableFromJSON(s *simplejson.Json) (*ScoredIPRetrievable, e
 	return nil, err
 }
 
+// NewIPRetrievableFromJSON ...
 func NewIPRetrievableFromJSON(s *simplejson.Json) (IPRetrievable, error) {
 	retrievingType := s.Get("type").MustString()
 	if retrievingType == "http" || retrievingType == "https" {
