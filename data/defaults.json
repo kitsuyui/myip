@@ -21,7 +21,7 @@
     {"type": "https", "url": "https://4.ifcfg.me/", "weight": 3.0},
     {"type": "https", "url": "https://ip.tyk.nu/", "weight": 3.0},
     {"type": "https", "url": "https://tnx.nl/ip", "weight": 3.0},
-    {"type": "https", "url": "https://l2.io/ip"},
+    {"type": "https", "url": "https://l2.io/ip", "weight": 3.0},
     {"type": "https", "url": "https://api.ipify.org/", "weight": 3.0},
     {"type": "https", "url": "https://myexternalip.com/raw", "weight": 3.0},
     {"type": "https", "url": "https://icanhazip.com", "weight": 3.0},
