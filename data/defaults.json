@@ -36,6 +36,7 @@
 		{"type": "dns", "name": "myip.opendns.com.", "server": "resolver3.opendns.com:53", "weight": 2.0},
 		{"type": "dns", "name": "myip.opendns.com.", "server": "resolver4.opendns.com:53", "weight": 2.0},
     {"type": "dns", "name": "whoami.akamai.net.", "server": "ns1-1.akamaitech.net:53", "weight": 2.0},
-    {"type": "dns", "name": "whoami.ultradns.net.", "server": "pdns1.ultradns.net:53", "weight": 2.0}
+    {"type": "dns", "name": "whoami.ultradns.net.", "server": "pdns1.ultradns.net:53", "weight": 2.0},
+    {"type": "dns", "name": "o-o.myaddr.l.google.com.", "queryType": "TXT", "server": "ns1.google.com:53", "weight": 2.0}
   ]
 }
