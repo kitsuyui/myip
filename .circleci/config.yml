@@ -23,20 +23,25 @@ jobs:
       - run:
           command: |
             go get -u github.com/mitchellh/gox
+            go get -u github.com/tcnksm/ghr
             ./bin/build.sh
-            mkdir -p /tmp/artifacts
-            mv ./build/myip_* /tmp/artifacts
-      - store_artifacts:
-          path: /tmp/artifacts
+            mkdir /tmp/releases
+            mv ./build/myip_* /tmp/releases
+            ghr -u $CIRCLE_PROJECT_USERNAME $CIRCLE_TAG /tmp/releases
 
 workflows:
   version: 2
   build_and_release:
     jobs:
-      - test
+      - test:
+          filters:
+            tags:
+              only: /.*/
       - release:
           requires:
             - test
           filters:
             branches:
-              only: release
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+.\d+$/
