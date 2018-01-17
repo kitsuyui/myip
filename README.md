@@ -22,13 +22,6 @@ $ chmod +x ./myip
 
 Choose your OS here: https://github.com/kitsuyui/go-myip/releases
 
-## Homebrew / macOS
-
-```
-$ brew tap kitsuyui/go-myip/installation/homebrew
-$ brew install myip
-```
-
 # Build
 
 ```console
