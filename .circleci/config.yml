@@ -16,17 +16,16 @@ jobs:
   release:
     working_directory: /workdir
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: golang:latest
     steps:
       - checkout
       - setup_remote_docker
       - run:
           command: |
-            docker create -v /root --name sources tianon/true
-            docker cp "$PWD/." sources:/root/
-            docker run --rm --volumes-from sources -w /root tcnksm/gox sh -c ./bin/build.sh
+            go get -u github.com/mitchellh/gox
+            ./bin/build.sh
             mkdir -p /tmp/artifacts
-            docker cp sources:/root/build/ /tmp/artifacts
+            mv ./build/myip_* /tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts
 
