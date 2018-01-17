@@ -31,12 +31,6 @@ $ go get -d ./...
 $ go build
 ```
 
-## with Docker
-
-```console
-$ docker run --rm -v "$(pwd)":/myip -w /myip tcnksm/gox sh -c "./build.sh"
-```
-
 ## LICENSE
 
 ### Source
