@@ -34,7 +34,7 @@ $ go build
 ## with Docker
 
 ```console
-$ docker run --rm -v "$(pwd)":/myip -w /myip tcnksm/gox sh -c "./build.sh"
+$ docker run --rm -v "$(pwd)":/myip -w /myip tcnksm/gox sh -c "./bin/build.sh"
 ```
 
 ## LICENSE
