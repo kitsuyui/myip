@@ -1,3 +1,11 @@
+# go-myip
+
+Show own Public IP (a.k.a. Global IP; WAN IP; External IP) with reliability by searching multiple way.
+
+[![CircleCI Status](https://circleci.com/gh/kitsuyui/go-myip.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/go-myip)
+[![Codecov Status](https://img.shields.io/codecov/c/github/kitsuyui/go-myip.svg)](https://codecov.io/github/kitsuyui/go-myip/)
+[![Github All Releases](https://img.shields.io/github/downloads/kitsuyui/go-myip/total.svg)](https://github.com/kitsuyui/go-myip/releases/latest)
+
 # Usage
 
 ```console
