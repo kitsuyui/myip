@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 outdir=$(mktemp -d)
 
-for pkg in ''; do
+for pkg in '' 'dns_resolver' 'http_resolver' 'base'; do
   go test \
     -covermode=atomic \
     -coverprofile="$outdir"/"$pkg".out \
