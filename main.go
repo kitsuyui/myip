@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"log"
 	"net"
 	"os"
@@ -45,7 +45,14 @@ func pickMapMaxItem(m map[string]float64) (string, float64) {
 	return maxKey, maxVal
 }
 
+var useNewline = flag.Bool("newline", false, "Show IP with newline.")
+
+func init() {
+    flag.BoolVar(useNewline, "n", false, "Show IP with newline.")
+}
+
 func main() {
+	flag.Parse()
 	data, err := defaults.Asset("defaults.json")
 	if err != nil {
 		log.Fatal(err)
@@ -56,7 +63,11 @@ func main() {
 	}
 	sip, err := pickupMaxScore(sir)
 	if err == nil && sip.Score >= 0.5 {
-		fmt.Print(sip.IP.String())
+		if *useNewline {
+			println(sip.IP.String())
+		} else {
+			print(sip.IP.String())
+		}
 	} else {
 		os.Exit(1)
 	}
