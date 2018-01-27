@@ -11,4 +11,5 @@ gox \
 -osarch='windows/386 windows/amd64' \
 -osarch='netbsd/386 netbsd/amd64' \
 -ldflags '-w -s' \
+-ldflags '-X main.version='"$BUILD_VERSION" \
 -output='build/myip_{{.OS}}_{{.Arch}}'

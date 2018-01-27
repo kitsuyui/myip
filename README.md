@@ -13,6 +13,27 @@ $ ./myip
 203.0.113.2
 ```
 
+## Output with newline by (`-n` or `--newline`) option
+
+```console
+(shell-prompt) $ ./myip
+203.0.113.2(shell-prompt) $
+```
+
+```console
+(shell-prompt) $ ./myip -n
+203.0.113.2
+(shell-prompt) $
+```
+
+## Version
+
+```console
+(shell-prompt) $ ./myip -V
+v0.2.2
+(shell-prompt) $
+```
+
 # Installation
 
 ```
