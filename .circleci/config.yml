@@ -24,10 +24,10 @@ jobs:
           command: |
             go get -u github.com/mitchellh/gox
             go get -u github.com/tcnksm/ghr
-            ./bin/build.sh
+            BUILD_VERSION="$CIRCLE_TAG" ./bin/build.sh
             mkdir /tmp/releases
             mv ./build/myip_* /tmp/releases
-            ghr -u $CIRCLE_PROJECT_USERNAME $CIRCLE_TAG /tmp/releases
+            ghr -u "$CIRCLE_PROJECT_USERNAME" "$CIRCLE_TAG" /tmp/releases
 
 workflows:
   version: 2

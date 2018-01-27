@@ -12,6 +12,8 @@ import (
 	"./defaults"
 )
 
+var version string
+
 //go:generate go-bindata -prefix "data/" -pkg defaults -o defaults/defaults.go data/...
 
 func pickupMaxScore(siprs []base.ScoredIPRetrievable) (*base.ScoredIP, error) {
@@ -46,13 +48,19 @@ func pickMapMaxItem(m map[string]float64) (string, float64) {
 }
 
 var useNewline = flag.Bool("newline", false, "Show IP with newline.")
+var cmdVersion = flag.Bool("version", false, "Show version.")
 
 func init() {
-    flag.BoolVar(useNewline, "n", false, "Show IP with newline.")
+	flag.BoolVar(useNewline, "n", false, "Show IP with newline.")
+	flag.BoolVar(cmdVersion, "V", false, "Show version.")
 }
 
 func main() {
 	flag.Parse()
+	if *cmdVersion {
+		println(version)
+		return
+	}
 	data, err := defaults.Asset("defaults.json")
 	if err != nil {
 		log.Fatal(err)
