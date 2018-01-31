@@ -1,6 +1,7 @@
 package dns_resolver
 
 import (
+	"fmt"
 	"net"
 	"strings"
 	"time"
@@ -61,4 +62,12 @@ func (p DNSDetector) RetrieveIPByTXTRecord() (net.IP, error) {
 	}
 	ip := net.ParseIP(txtRecord.Txt[0])
 	return ip, nil
+}
+
+func (p DNSDetector) String() string {
+	qt := "A"
+	if strings.ToUpper(p.QueryType) == "TXT" {
+		qt = "TXT"
+	}
+	return fmt.Sprintf("%s,%s,%s", qt, p.LookupDomainName, p.Resolver)
 }

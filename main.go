@@ -25,6 +25,9 @@ func pickupMaxScore(siprs []base.ScoredIPRetrievable) (*base.ScoredIP, error) {
 		maxWeight += sipr.Weight
 		go func(sipr base.ScoredIPRetrievable) {
 			if sip, err := sipr.RetriveIPWithScoring(); err == nil {
+				if *verboseMode {
+					log.Printf("IP:%s\ttype:%s\tweight:%1.1f\t%s", sip.IP.String(), sipr.Type, sipr.Weight, sipr.String())
+				}
 				m[sip.IP.String()] += sip.Score
 			}
 			wg.Done()
@@ -49,10 +52,12 @@ func pickMapMaxItem(m map[string]float64) (string, float64) {
 
 var useNewline = flag.Bool("newline", false, "Show IP with newline.")
 var cmdVersion = flag.Bool("version", false, "Show version.")
+var verboseMode = flag.Bool("verbose", false, "Verbose mode.")
 
 func init() {
 	flag.BoolVar(useNewline, "n", false, "Show IP with newline.")
 	flag.BoolVar(cmdVersion, "V", false, "Show version.")
+	flag.BoolVar(verboseMode, "v", false, "Verbose mode.")
 }
 
 func main() {

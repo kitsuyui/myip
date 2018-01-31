@@ -6,6 +6,16 @@ Show own Public IP (a.k.a. Global IP; WAN IP; External IP) with reliability by s
 [![Codecov Status](https://img.shields.io/codecov/c/github/kitsuyui/myip.svg)](https://codecov.io/github/kitsuyui/myip/)
 [![Github All Releases](https://img.shields.io/github/downloads/kitsuyui/myip/total.svg)](https://github.com/kitsuyui/myip/releases/latest)
 
+# Mechanism
+
+myip supports various way to IP resolving.
+
+- HTTP / HTTPS
+- DNS
+- STUN
+
+c.f. https://github.com/kitsuyui/myip/blob/master/data/defaults.json
+
 # Usage
 
 ```console
@@ -34,6 +44,23 @@ $
 $ myip -V
 v0.2.2
 $
+```
+
+## Verbose mode
+
+```console
+$ myip -v
+2018/01/01 12:00:00 IP:203.0.113.2	type:dns	weight:2.0	A,myip.opendns.com.,resolver3.opendns.com:53
+2018/01/01 12:00:00 IP:203.0.113.2	type:dns	weight:2.0	A,whoami.akamai.net.,ns1-1.akamaitech.net:53
+2018/01/01 12:00:00 IP:203.0.113.2	type:dns	weight:2.0	TXT,o-o.myaddr.l.google.com.,ns1.google.com:53
+2018/01/01 12:00:00 IP:203.0.113.2	type:stun	weight:3.0	stun4.l.google.com:19302
+2018/01/01 12:00:00 IP:203.0.113.2	type:http	weight:0.5	http://ipcheck.ieserver.net/
+.
+.
+.
+2018/01/01 12:00:00 IP:203.0.113.2	type:https	weight:3.0	https://icanhazip.com/
+2018/01/01 12:00:00 IP:203.0.113.2	type:https	weight:3.0	https://wtfismyip.com/text
+203.0.113.2
 ```
 
 # Installation
@@ -89,3 +116,4 @@ The 3-Clause BSD License. See also LISENCE file.
 
 - [golang/go](https://github.com/golang/go/) ... [BSD 3-clause "New" or "Revised" License](https://github.com/golang/go/blob/master/LICENSE)
 - [miekg/dns](https://github.com/miekg/dns) ... [BSD 3-clause "New" or "Revised" License](https://github.com/miekg/dns/blob/master/LICENSE)
+- [gortc/stun](https://github.com/gortc/stun) ... [BSD 3-Clause "New" or "Revised" License](https://github.com/gortc/stun/blob/master/LICENSE)

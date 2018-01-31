@@ -69,3 +69,7 @@ func TestDNSTXTRecordFailWhenInvalidLookup(t *testing.T) {
 		t.Errorf("IP should be nil when error")
 	}
 }
+func TestGetString(t *testing.T) {
+	DNSDetector{LookupDomainName: "dummy.myaddr.l.google.com.", Resolver: "ns1.google.com:53", QueryType: "TXT"}.String()
+	DNSDetector{LookupDomainName: "dummy.opendns.com.", Resolver: "resolver1.opendns.com:53"}.String()
+}

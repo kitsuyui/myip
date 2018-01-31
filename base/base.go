@@ -31,10 +31,12 @@ type ScoredIP struct {
 
 type IPRetrievable interface {
 	RetrieveIP() (net.IP, error)
+	String() string
 }
 
 type ScoredIPRetrievable struct {
 	IPRetrievable
+	Type   string
 	Weight float64
 }
 

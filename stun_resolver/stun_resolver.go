@@ -1,6 +1,7 @@
 package stun_resolver
 
 import (
+	"fmt"
 	"net"
 	"time"
 
@@ -38,4 +39,8 @@ func (p STUNDetector) RetrieveIP() (net.IP, error) {
 	}
 	defer c.Close()
 	return ip, nil
+}
+
+func (p STUNDetector) String() string {
+	return fmt.Sprintf("%s", p.Host)
 }

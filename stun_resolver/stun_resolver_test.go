@@ -36,3 +36,7 @@ func TestSTUNInvalidAddress(t *testing.T) {
 		t.Errorf("IP should be nil when error")
 	}
 }
+
+func TestGetString(t *testing.T) {
+	STUNDetector{Host: "stun.l.google.com:19302", Protocol: "udp"}.String()
+}

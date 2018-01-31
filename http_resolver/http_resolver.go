@@ -1,6 +1,7 @@
 package http_resolver
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -32,4 +33,8 @@ func (p HTTPDetector) RetrieveIP() (net.IP, error) {
 		return nil, &base.NotRetrievedError{}
 	}
 	return ip, nil
+}
+
+func (p HTTPDetector) String() string {
+	return fmt.Sprintf("%s", p.URL)
 }

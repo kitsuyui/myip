@@ -43,28 +43,28 @@ func parseScoredIPRetrievableFromJSON(j json.RawMessage) (*base.ScoredIPRetrieva
 			return nil, err
 		}
 		r.Timeout = ut.timeout(r.Timeout)
-		return &scoredipr{r, ut.Weight}, nil
+		return &scoredipr{r, ut.Type, ut.Weight}, nil
 	case "https":
 		var r http_resolver.HTTPDetector
 		if err := json.Unmarshal(j, &r); err != nil {
 			return nil, err
 		}
 		r.Timeout = ut.timeout(r.Timeout)
-		return &scoredipr{r, ut.Weight}, nil
+		return &scoredipr{r, ut.Type, ut.Weight}, nil
 	case "dns":
 		var r dns_resolver.DNSDetector
 		if err := json.Unmarshal(j, &r); err != nil {
 			return nil, err
 		}
 		r.Timeout = ut.timeout(r.Timeout)
-		return &scoredipr{r, ut.Weight}, nil
+		return &scoredipr{r, ut.Type, ut.Weight}, nil
 	case "stun":
 		var s stun_resolver.STUNDetector
 		if err := json.Unmarshal(j, &s); err != nil {
 			return nil, err
 		}
 		s.Timeout = ut.timeout(s.Timeout)
-		return &scoredipr{s, ut.Weight}, nil
+		return &scoredipr{s, ut.Type, ut.Weight}, nil
 	default:
 		return nil, base.ConfigError{}
 	}

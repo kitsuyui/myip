@@ -83,7 +83,7 @@ func defaultsJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "defaults.json", size: 3288, mode: os.FileMode(420), modTime: time.Unix(1517404152, 0)}
+	info := bindataFileInfo{name: "defaults.json", size: 3288, mode: os.FileMode(420), modTime: time.Unix(1517407658, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }

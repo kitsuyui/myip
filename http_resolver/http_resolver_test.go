@@ -36,3 +36,7 @@ func TestHTTPFail2(t *testing.T) {
 		t.Errorf("IP should be nil when error")
 	}
 }
+
+func TestGetString(t *testing.T) {
+	HTTPDetector{URL: "http://example.com/"}.String()
+}
