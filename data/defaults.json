@@ -38,6 +38,13 @@
     {"type": "dns", "name": "myip.opendns.com.", "server": "resolver4.opendns.com:53", "weight": 2.0},
     {"type": "dns", "name": "whoami.akamai.net.", "server": "ns1-1.akamaitech.net:53", "weight": 2.0},
     {"type": "dns", "name": "whoami.ultradns.net.", "server": "pdns1.ultradns.net:53", "weight": 2.0},
-    {"type": "dns", "name": "o-o.myaddr.l.google.com.", "queryType": "TXT", "server": "ns1.google.com:53", "weight": 2.0}
+    {"type": "dns", "name": "o-o.myaddr.l.google.com.", "queryType": "TXT", "server": "ns1.google.com:53", "weight": 2.0},
+
+    {"type": "stun", "host": "stun1.l.google.com:19302", "protocol": "udp", "weight": 3.0},
+    {"type": "stun", "host": "stun2.l.google.com:19302", "protocol": "udp", "weight": 3.0},
+    {"type": "stun", "host": "stun3.l.google.com:19302", "protocol": "udp", "weight": 3.0},
+    {"type": "stun", "host": "stun4.l.google.com:19302", "protocol": "udp", "weight": 3.0},
+    {"type": "stun", "host": "stun.services.mozilla.com:3478", "protocol": "udp", "weight": 3.0},
+    {"type": "stun", "host": "stunserver.org:3478", "protocol": "udp", "weight": 3.0}
   ]
 }
