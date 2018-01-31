@@ -9,39 +9,57 @@ Show own Public IP (a.k.a. Global IP; WAN IP; External IP) with reliability by s
 # Usage
 
 ```console
-$ ./myip
+$ myip
 203.0.113.2
 ```
 
 ## Output with newline by (`-n` or `--newline`) option
 
+This option gives output with ending newline character.
+
 ```console
-(shell-prompt) $ ./myip
-203.0.113.2(shell-prompt) $
+$ myip
+203.0.113.2$
 ```
 
 ```console
-(shell-prompt) $ ./myip -n
+$ myip -n
 203.0.113.2
-(shell-prompt) $
+$
 ```
 
 ## Version
 
 ```console
-(shell-prompt) $ ./myip -V
+$ myip -V
 v0.2.2
-(shell-prompt) $
+$
 ```
 
 # Installation
 
-```
-$ wget https://github.com/kitsuyui/go-myip/releases/download/0.0.1a/myip_{ your OS } -O myip
-$ chmod +x ./myip
+## go get
+
+If you have Golang environment, install with just doing this;
+
+```console
+$ go get github.com/kitsuyui/myip
 ```
 
-Choose your OS here: https://github.com/kitsuyui/go-myip/releases
+## Install static binary releases
+
+If you don't have Golang environments or prefer single binary environment, you can use statically binary release.
+It has no DLL dependency. So you can use it by just downloading.
+
+1. Choose your OS here: https://github.com/kitsuyui/go-myip/releases
+2. Download and make it executable
+
+### Example command
+
+```console
+$ wget https://github.com/kitsuyui/myip/releases/download/${version}/myip_${your_os} -O myip
+$ chmod +x ./myip
+```
 
 ## Homebrew / macOS
 
