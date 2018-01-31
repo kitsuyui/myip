@@ -8,7 +8,6 @@ gibo macOS
 gibo Windows
 gibo Linux
 gibo Go
-echo 'defaults/'
 echo 'myip'
 echo 'myip_*'
 echo 'go-myip'

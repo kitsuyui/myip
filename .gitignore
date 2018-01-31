@@ -87,7 +87,6 @@ $RECYCLE.BIN/
 *.out
 
 
-defaults/
 myip
 myip_*
 go-myip
