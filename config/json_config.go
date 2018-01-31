@@ -7,6 +7,7 @@ import (
 	"github.com/kitsuyui/myip/base"
 	"github.com/kitsuyui/myip/dns_resolver"
 	"github.com/kitsuyui/myip/http_resolver"
+	"github.com/kitsuyui/myip/stun_resolver"
 )
 
 type ConfigJSON struct {
@@ -57,6 +58,13 @@ func parseScoredIPRetrievableFromJSON(j json.RawMessage) (*base.ScoredIPRetrieva
 		}
 		r.Timeout = ut.timeout(r.Timeout)
 		return &scoredipr{r, ut.Weight}, nil
+	case "stun":
+		var s stun_resolver.STUNDetector
+		if err := json.Unmarshal(j, &s); err != nil {
+			return nil, err
+		}
+		s.Timeout = ut.timeout(s.Timeout)
+		return &scoredipr{s, ut.Weight}, nil
 	default:
 		return nil, base.ConfigError{}
 	}
