@@ -30,6 +30,7 @@
     {"type": "https", "url": "https://ifconfig.co/ip", "weight": 3.0},
     {"type": "https", "url": "https://ipinfo.io/ip", "weight": 3.0},
     {"type": "https", "url": "https://wtfismyip.com/text", "weight": 3.0},
+    {"type": "https", "url": "https://secure.internode.on.net/webtools/showmyip?textonly=1", "weight": 3.0},
 
     {"type": "dns", "name": "myip.opendns.com.", "server": "resolver1.opendns.com:53", "weight": 2.0},
     {"type": "dns", "name": "myip.opendns.com.", "server": "resolver2.opendns.com:53", "weight": 2.0},
