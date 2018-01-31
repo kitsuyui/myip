@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"time"
 
-	"../base"
-	"../dns_resolver"
-	"../http_resolver"
+	"github.com/kitsuyui/myip/base"
+	"github.com/kitsuyui/myip/dns_resolver"
+	"github.com/kitsuyui/myip/http_resolver"
 )
 
 type ConfigJSON struct {
