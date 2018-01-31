@@ -1,10 +1,10 @@
-# go-myip
+# myip
 
 Show own Public IP (a.k.a. Global IP; WAN IP; External IP) with reliability by searching multiple way.
 
-[![CircleCI Status](https://circleci.com/gh/kitsuyui/go-myip.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/go-myip)
-[![Codecov Status](https://img.shields.io/codecov/c/github/kitsuyui/go-myip.svg)](https://codecov.io/github/kitsuyui/go-myip/)
-[![Github All Releases](https://img.shields.io/github/downloads/kitsuyui/go-myip/total.svg)](https://github.com/kitsuyui/go-myip/releases/latest)
+[![CircleCI Status](https://circleci.com/gh/kitsuyui/myip.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/myip)
+[![Codecov Status](https://img.shields.io/codecov/c/github/kitsuyui/myip.svg)](https://codecov.io/github/kitsuyui/myip/)
+[![Github All Releases](https://img.shields.io/github/downloads/kitsuyui/myip/total.svg)](https://github.com/kitsuyui/myip/releases/latest)
 
 # Usage
 
@@ -51,7 +51,7 @@ $ go get github.com/kitsuyui/myip
 If you don't have Golang environments or prefer single binary environment, you can use statically binary release.
 It has no DLL dependency. So you can use it by just downloading.
 
-1. Choose your OS here: https://github.com/kitsuyui/go-myip/releases
+1. Choose your OS here: https://github.com/kitsuyui/myip/releases
 2. Download and make it executable
 
 ### Example command
