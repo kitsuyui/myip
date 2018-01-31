@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"../base"
+	"github.com/kitsuyui/myip/base"
 )
 
 type HTTPDetector struct {

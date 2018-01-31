@@ -7,9 +7,9 @@ import (
 	"os"
 	"sync"
 
-	"./base"
-	"./config"
-	"./defaults"
+	"github.com/kitsuyui/myip/base"
+	"github.com/kitsuyui/myip/config"
+	"github.com/kitsuyui/myip/defaults"
 )
 
 var version string
