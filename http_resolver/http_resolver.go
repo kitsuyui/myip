@@ -6,18 +6,16 @@ import (
 	"net"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/kitsuyui/myip/base"
 )
 
 type HTTPDetector struct {
-	URL     string        `json:"url"`
-	Timeout time.Duration `json:"timeout"`
+	URL string `json:"url"`
 }
 
 func (p HTTPDetector) RetrieveIP() (net.IP, error) {
-	client := http.Client{Timeout: p.Timeout}
+	client := http.Client{}
 	resp, err := client.Get(p.URL)
 	if err != nil {
 		return nil, err

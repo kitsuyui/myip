@@ -10,9 +10,8 @@ import (
 )
 
 type STUNDetector struct {
-	Host     string        `json:"host"`
-	Protocol string        `json:"protocol"`
-	Timeout  time.Duration `json:"timeout"`
+	Host     string `json:"host"`
+	Protocol string `json:"protocol"`
 }
 
 func (p STUNDetector) RetrieveIP() (net.IP, error) {
@@ -21,7 +20,7 @@ func (p STUNDetector) RetrieveIP() (net.IP, error) {
 	if err != nil {
 		return nil, &base.NotRetrievedError{}
 	}
-	deadline := time.Now().Add(p.Timeout)
+	deadline := time.Now().AddDate(0, 0, 1)
 	var err2 error
 	if err := c.Do(stun.MustBuild(stun.TransactionID, stun.BindingRequest), deadline, func(res stun.Event) {
 		if res.Error != nil {

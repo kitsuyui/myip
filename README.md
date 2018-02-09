@@ -14,7 +14,7 @@ myip supports various way to IP resolving.
 - DNS
 - STUN
 
-c.f. https://github.com/kitsuyui/myip/blob/master/data/defaults.json
+c.f. https://github.com/kitsuyui/myip/blob/master/targets/targets.go
 
 # Usage
 
@@ -100,8 +100,6 @@ $ brew install myip
 # Build
 
 ```console
-$ go get github.com/jteeuwen/go-bindata/...
-$ go generate
 $ go get -d ./...
 $ go build
 ```

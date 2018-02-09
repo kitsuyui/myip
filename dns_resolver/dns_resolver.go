@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"strings"
-	"time"
 
 	"github.com/miekg/dns"
 
@@ -12,10 +11,9 @@ import (
 )
 
 type DNSDetector struct {
-	LookupDomainName string        `json:"name"`
-	Resolver         string        `json:"server"`
-	Timeout          time.Duration `json:"timeout"`
-	QueryType        string        `json:"queryType"`
+	LookupDomainName string `json:"name"`
+	Resolver         string `json:"server"`
+	QueryType        string `json:"queryType"`
 }
 
 func (p DNSDetector) RetrieveIP() (net.IP, error) {
@@ -28,7 +26,6 @@ func (p DNSDetector) RetrieveIP() (net.IP, error) {
 func (p DNSDetector) RetrieveIPByARecord() (net.IP, error) {
 	c := dns.Client{}
 	m := dns.Msg{}
-	c.Timeout = p.Timeout
 	m.SetQuestion(p.LookupDomainName, dns.TypeA)
 	result, _, err := c.Exchange(&m, p.Resolver)
 	if err != nil {
@@ -47,7 +44,6 @@ func (p DNSDetector) RetrieveIPByARecord() (net.IP, error) {
 func (p DNSDetector) RetrieveIPByTXTRecord() (net.IP, error) {
 	c := dns.Client{}
 	m := dns.Msg{}
-	c.Timeout = p.Timeout
 	m.SetQuestion(p.LookupDomainName, dns.TypeTXT)
 	result, _, err := c.Exchange(&m, p.Resolver)
 	if err != nil {

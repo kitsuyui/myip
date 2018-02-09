@@ -1,7 +1,12 @@
 package stun_resolver
 
 import (
+	"context"
+	"net"
 	"testing"
+	"time"
+
+	"github.com/kitsuyui/myip/base"
 )
 
 func TestSTUNSuccess(t *testing.T) {
@@ -16,8 +21,29 @@ func TestSTUNSuccess(t *testing.T) {
 }
 
 func TestSTUNFail(t *testing.T) {
+	ctx := context.Background()
+	timeout := 500 * time.Millisecond
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
 	h := STUNDetector{Host: "127.0.0.1:1000", Protocol: "udp"}
-	ip, err := h.RetrieveIP()
+	var err error
+	var ip net.IP
+	type Result struct {
+		IP  net.IP
+		Err error
+	}
+	c := make(chan Result)
+	go func() {
+		ip, err := h.RetrieveIP()
+		c <- Result{ip, err}
+	}()
+	select {
+	case <-ctx.Done():
+		err = &base.TimeoutError{}
+	case r := <-c:
+		ip = r.IP
+		err = r.Err
+	}
 	if err == nil {
 		t.Errorf("This should be error")
 	}

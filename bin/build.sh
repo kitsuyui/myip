@@ -1,6 +1,4 @@
 #!/bin/sh
-go get -u github.com/jteeuwen/go-bindata/...
-go generate
 go get -d ./...
 CGO_ENABLE=0 \
 gox \

@@ -1,6 +1,7 @@
 package base
 
 import "net"
+import "context"
 
 type NotRetrievedError struct {
 	Message string
@@ -13,15 +14,15 @@ func (n NotRetrievedError) Error() string {
 	return "No Answer"
 }
 
-type ConfigError struct {
+type TimeoutError struct {
 	Message string
 }
 
-func (c ConfigError) Error() string {
-	if c.Message != "" {
-		return c.Message
+func (n TimeoutError) Error() string {
+	if n.Message != "" {
+		return n.Message
 	}
-	return "ConfigError"
+	return "Timeout"
 }
 
 type ScoredIP struct {
@@ -36,11 +37,23 @@ type IPRetrievable interface {
 
 type ScoredIPRetrievable struct {
 	IPRetrievable
-	Type   string
 	Weight float64
 }
 
-func (p ScoredIPRetrievable) RetriveIPWithScoring() (*ScoredIP, error) {
-	ip, err := p.RetrieveIP()
-	return &ScoredIP{ip, p.Weight}, err
+func (p ScoredIPRetrievable) RetriveIPWithScoring(ctx context.Context) (*ScoredIP, error) {
+	type Result struct {
+		IP  net.IP
+		Err error
+	}
+	c := make(chan Result)
+	go func() {
+		ip, err := p.RetrieveIP()
+		c <- Result{ip, err}
+	}()
+	select {
+	case <-ctx.Done():
+		return nil, &TimeoutError{}
+	case r := <-c:
+		return &ScoredIP{r.IP, p.Weight}, r.Err
+	}
 }
