@@ -112,6 +112,6 @@ The 3-Clause BSD License. See also LISENCE file.
 
 ### statically linked libraries:
 
-- [golang/go](https://github.com/golang/go/) ... [BSD 3-clause "New" or "Revised" License](https://github.com/golang/go/blob/master/LICENSE)
-- [miekg/dns](https://github.com/miekg/dns) ... [BSD 3-clause "New" or "Revised" License](https://github.com/miekg/dns/blob/master/LICENSE)
+- [golang/go](https://github.com/golang/go/) ... [BSD 3-Clause "New" or "Revised" License](https://github.com/golang/go/blob/master/LICENSE)
+- [miekg/dns](https://github.com/miekg/dns) ... [BSD 3-Clause "New" or "Revised" License](https://github.com/miekg/dns/blob/master/LICENSE)
 - [gortc/stun](https://github.com/gortc/stun) ... [BSD 3-Clause "New" or "Revised" License](https://github.com/gortc/stun/blob/master/LICENSE)
