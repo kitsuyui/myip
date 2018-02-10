@@ -1,7 +1,7 @@
 version: 2
 jobs:
   test:
-    working_directory: /workdir
+    working_directory: /go/src/github.com/kitsuyui/myip
     docker:
       - image: golang:latest
     steps:
@@ -14,7 +14,7 @@ jobs:
             bash <(curl -s https://codecov.io/bash)
 
   release:
-    working_directory: /workdir
+    working_directory: /go/src/github.com/kitsuyui/myip
     docker:
       - image: golang:latest
     steps:
@@ -22,8 +22,8 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-            go get -u github.com/mitchellh/gox
-            go get -u github.com/tcnksm/ghr
+            go get github.com/mitchellh/gox
+            go get github.com/tcnksm/ghr
             BUILD_VERSION="$CIRCLE_TAG" ./bin/build.sh
             mkdir /tmp/releases
             mv ./build/myip_* /tmp/releases
