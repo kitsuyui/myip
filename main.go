@@ -44,6 +44,8 @@ func pickupMaxScore(siprs []base.ScoredIPRetrievable, timeout time.Duration) (*b
 	} else {
 		logger.SetOutput(ioutil.Discard)
 	}
+	c := make(chan base.ScoredIP)
+	defer close(c)
 	for _, sipr := range siprs {
 		wg.Add(1)
 		sumOfWeight += sipr.Weight
@@ -55,10 +57,15 @@ func pickupMaxScore(siprs []base.ScoredIPRetrievable, timeout time.Duration) (*b
 				return
 			}
 			logger.Printf("IP:%s\ttype:%s\tweight:%1.1f\t%s", sip.IP.String(), typeName(sipr.IPRetrievable), sipr.Weight, sipr.String())
-			m[sip.IP.String()] += sip.Score
+			c <- *sip
 			wg.Done()
 		}(sipr)
 	}
+	go func() {
+		for sip := range c {
+			m[sip.IP.String()] += sip.Score
+		}
+	}()
 	wg.Wait()
 	maxKey, maxVal := pickMapMaxItem(m)
 	return &base.ScoredIP{net.ParseIP(maxKey), maxVal / sumOfWeight}, nil
