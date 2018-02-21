@@ -5,9 +5,7 @@ import (
 	"flag"
 	"io/ioutil"
 	"log"
-	"net"
 	"os"
-	"sync"
 	"time"
 
 	"github.com/kitsuyui/myip/base"
@@ -31,8 +29,7 @@ func typeName(ipr interface{}) string {
 	return ""
 }
 
-func pickupMaxScore(siprs []base.ScoredIPRetrievable, timeout time.Duration) (*base.ScoredIP, error) {
-	wg := new(sync.WaitGroup)
+func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, timeout time.Duration, threshold float64) (*base.ScoredIP, error) {
 	sumOfWeight := 0.0
 	m := map[string]float64{}
 	ctx := context.Background()
@@ -47,46 +44,37 @@ func pickupMaxScore(siprs []base.ScoredIPRetrievable, timeout time.Duration) (*b
 	c := make(chan base.ScoredIP)
 	defer close(c)
 	for _, sipr := range siprs {
-		wg.Add(1)
 		sumOfWeight += sipr.Weight
 		go func(sipr base.ScoredIPRetrievable) {
 			sip, err := sipr.RetriveIPWithScoring(ctx)
 			if err != nil {
 				logger.Printf("Error:%s\ttype:%s\tweight:%1.1f\t%s", err, typeName(sipr.IPRetrievable), sipr.Weight, sipr.String())
-				wg.Done()
 				return
 			}
 			logger.Printf("IP:%s\ttype:%s\tweight:%1.1f\t%s", sip.IP.String(), typeName(sipr.IPRetrievable), sipr.Weight, sipr.String())
 			c <- *sip
-			wg.Done()
 		}(sipr)
 	}
+	result := make(chan base.ScoredIP)
+	defer close(result)
 	go func() {
 		for sip := range c {
-			m[sip.IP.String()] += sip.Score
+			key := sip.IP.String()
+			m[key] += sip.Score
+			currentScore := m[key] / sumOfWeight
+			if currentScore > threshold {
+				result <- base.ScoredIP{sip.IP, currentScore}
+			}
 		}
 	}()
-	wg.Wait()
-	maxKey, maxVal := pickMapMaxItem(m)
-	return &base.ScoredIP{net.ParseIP(maxKey), maxVal / sumOfWeight}, nil
-}
-
-func pickMapMaxItem(m map[string]float64) (string, float64) {
-	maxVal := 0.0
-	maxKey := ""
-	for k2, v2 := range m {
-		if v2 > maxVal {
-			maxKey = k2
-			maxVal = v2
-		}
-	}
-	return maxKey, maxVal
+	sip := <-result
+	return &sip, nil
 }
 
 var useNewline = flag.Bool("newline", false, "Show IP with newline.")
 var cmdVersion = flag.Bool("version", false, "Show version.")
 var verboseMode = flag.Bool("verbose", false, "Verbose mode.")
-var timeout = flag.Duration("timeout", 1*time.Second, "Timeout duration.")
+var timeout = flag.Duration("timeout", 3*time.Second, "Timeout duration.")
 var scoreThreshold = flag.Float64("threshold", 0.5, "Threshold that should be exceeded by top weighted votes.")
 
 func init() {
@@ -104,7 +92,7 @@ func main() {
 		return
 	}
 	sir := targets.IPRetrievables()
-	sip, err := pickupMaxScore(sir, *timeout)
+	sip, err := pickUpFirstItemThatExceededThreshold(sir, *timeout, *scoreThreshold)
 	if err == nil && sip.Score >= *scoreThreshold {
 		if *useNewline {
 			println(sip.IP.String())
