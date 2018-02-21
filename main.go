@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
+	"github.com/docopt/docopt-go"
 	"github.com/kitsuyui/myip/base"
 	"github.com/kitsuyui/myip/dns_resolver"
 	"github.com/kitsuyui/myip/http_resolver"
@@ -16,6 +19,7 @@ import (
 )
 
 var version string
+var verboseMode bool
 
 func typeName(ipr interface{}) string {
 	switch ipr.(type) {
@@ -36,7 +40,7 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 	logger := log.Logger{}
-	if *verboseMode {
+	if verboseMode {
 		logger.SetOutput(os.Stderr)
 	} else {
 		logger.SetOutput(ioutil.Discard)
@@ -71,33 +75,75 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 	return &sip, nil
 }
 
-var useNewline = flag.Bool("newline", false, "Show IP with newline.")
-var cmdVersion = flag.Bool("version", false, "Show version.")
-var verboseMode = flag.Bool("verbose", false, "Verbose mode.")
 var timeout = flag.Duration("timeout", 3*time.Second, "Timeout duration.")
-var scoreThreshold = flag.Float64("threshold", 0.5, "Threshold that should be exceeded by top weighted votes.")
 
 func init() {
-	flag.BoolVar(useNewline, "n", false, "Show IP with newline.")
-	flag.BoolVar(cmdVersion, "V", false, "Show version.")
-	flag.BoolVar(verboseMode, "v", false, "Verbose mode.")
-	flag.DurationVar(timeout, "t", 1*time.Second, "Timeout duration.")
-	flag.Float64Var(scoreThreshold, "T", 0.5, "Threshold that should be exceeded by top weighted votes.")
+	flag.DurationVar(timeout, "t", 3*time.Second, "Timeout duration.")
 }
 
 func main() {
-	flag.Parse()
-	if *cmdVersion {
+
+	usage := `myip
+
+Usage:
+ myip [-v | --verbose] [-4 | -6] [-T=<rate>] [-t=<duration>]
+ myip (--help | --version)
+
+Options:
+ -h --help               						 Show this screen.
+ -V --version            						 Show version.
+ -v --verbose            						 Verbose mode.
+ -4 --ipv4               						 Prefer IPv4.
+ -6 --ipv6               						 Prefer IPv6.
+ -n --newline            						 Show IP with newline.
+ -N --no-newline         						 Show IP without newline.
+ -T=<rate> --threshold=<rate>  			 Threshold that must be exceeded by weighted votes [default: 0.5].
+ -t=<duration> --timeout=<duration>  Timeout [default: 3s].
+`
+	opts, err := docopt.ParseDoc(usage)
+	if err != nil {
+		fmt.Errorf("%s", err)
+	}
+	if showVersion, _ := opts.Bool("--version"); showVersion {
 		println(version)
 		return
 	}
-	sir := targets.IPRetrievables()
-	sip, err := pickUpFirstItemThatExceededThreshold(sir, *timeout, *scoreThreshold)
-	if err == nil && sip.Score >= *scoreThreshold {
-		if *useNewline {
-			println(sip.IP.String())
-		} else {
-			print(sip.IP.String())
+	var sir []base.ScoredIPRetrievable
+	if ipv4, _ := opts.Bool("--ipv4"); ipv4 {
+		sir = targets.IPv4Retrievables()
+	} else if ipv6, _ := opts.Bool("--ipv6"); ipv6 {
+		sir = targets.IPv6Retrievables()
+	} else {
+		sir = targets.IPRetrievables()
+	}
+	if verbose, _ := opts.Bool("--verbose"); verbose {
+		verboseMode = true
+	}
+	threshold, err := opts.Float64("--threshold")
+	if err != nil {
+		fmt.Errorf("%s", err)
+	}
+
+	timeoutStr, err := opts.String("--timeout")
+	if err != nil {
+		fmt.Errorf("%s", err)
+	}
+
+	var duration time.Duration
+	f, err := strconv.ParseFloat(timeoutStr, 64)
+	if err != nil {
+		duration, err = time.ParseDuration(timeoutStr)
+		if err != nil {
+			fmt.Errorf("%s", err)
+		}
+	} else {
+		duration = time.Duration(f) * time.Second
+	}
+	sip, err := pickUpFirstItemThatExceededThreshold(sir, duration, threshold)
+	if err == nil && sip.Score >= threshold {
+		print(sip.IP.String())
+		if newline, _ := opts.Bool("--newline"); newline {
+			println("")
 		}
 	} else {
 		os.Exit(1)

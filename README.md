@@ -63,6 +63,39 @@ $ myip -v
 203.0.113.2
 ```
 
+## Ready for IPv6
+
+When your machine has IPv6 address, `-6` option is available.
+
+```console
+$ myip -6
+2001:0db8:0000:0042:0000:8a2e:0370:7334
+```
+
+If your machine doesn't have IPv6 address, fallbacks to IPv4.
+
+## Help
+
+```
+$ myip -h
+myip
+
+Usage:
+ myip [-v | --verbose] [-4 | -6] [-T=<rate>] [-t=<duration>]
+ myip (--help | --version)
+
+Options:
+ -h --help               						 Show this screen.
+ -V --version            						 Show version.
+ -v --verbose            						 Verbose mode.
+ -4 --ipv4               						 Prefer IPv4.
+ -6 --ipv6               						 Prefer IPv6.
+ -n --newline            						 Show IP with newline.
+ -N --no-newline         						 Show IP without newline.
+ -T=<rate> --threshold=<rate>  			 Threshold that must be exceeded by weighted votes [default: 0.5].
+ -t=<duration> --timeout=<duration>  Timeout [default: 3s].
+```
+
 # Installation
 
 ## go get
@@ -115,3 +148,4 @@ The 3-Clause BSD License. See also LISENCE file.
 - [golang/go](https://github.com/golang/go/) ... [BSD 3-Clause "New" or "Revised" License](https://github.com/golang/go/blob/master/LICENSE)
 - [miekg/dns](https://github.com/miekg/dns) ... [BSD 3-Clause "New" or "Revised" License](https://github.com/miekg/dns/blob/master/LICENSE)
 - [gortc/stun](https://github.com/gortc/stun) ... [BSD 3-Clause "New" or "Revised" License](https://github.com/gortc/stun/blob/master/LICENSE)
+- [docopt/docopt-go](https://github.com/docopt/docopt.go) ... [MIT License](https://github.com/docopt/docopt.go/blob/master/LICENSE)

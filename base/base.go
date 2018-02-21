@@ -38,6 +38,8 @@ type IPRetrievable interface {
 type ScoredIPRetrievable struct {
 	IPRetrievable
 	Weight float64
+	IPv4   bool
+	IPv6   bool
 }
 
 func (p ScoredIPRetrievable) RetriveIPWithScoring(ctx context.Context) (*ScoredIP, error) {
