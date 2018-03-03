@@ -141,9 +141,9 @@ Options:
 	}
 	sip, err := pickUpFirstItemThatExceededThreshold(sir, duration, threshold)
 	if err == nil && sip.Score >= threshold {
-		print(sip.IP.String())
+		fmt.Print(sip.IP.String())
 		if newline, _ := opts.Bool("--newline"); newline {
-			println("")
+			fmt.Println("")
 		}
 	} else {
 		os.Exit(1)
