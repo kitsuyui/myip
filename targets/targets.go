@@ -14,15 +14,14 @@ func IPRetrievables() []base.ScoredIPRetrievable {
 	type stun = stun_resolver.STUNDetector
 	return []base.ScoredIPRetrievable{
 		scored{IPRetrievable: http{URL: "http://ipecho.net/plain"}, Weight: 0.5, IPv4: true, IPv6: false},
-		scored{IPRetrievable: http{URL: "http://ipecho.net/plain"}, Weight: 0.5, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://inet-ip.info/ip"}, Weight: 0.5, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://eth0.me/"}, Weight: 0.5, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://ipcheck.ieserver.net/"}, Weight: 0.5, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://ifconfig.me/ip"}, Weight: 0.5, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://smart-ip.net/myip"}, Weight: 0.5, IPv4: true, IPv6: true},
 		scored{IPRetrievable: http{URL: "http://whatismyip.akamai.com/"}, Weight: 1.0, IPv4: true, IPv6: false},
-		scored{IPRetrievable: http{URL: "http://checkip.amazonaws.com/"}, Weight: 1.0, IPv4: true, IPv6: false},
 
+		scored{IPRetrievable: http{URL: "https://checkip.amazonaws.com/"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://bot.whatismyipaddress.com/"}, Weight: 3.0, IPv4: true, IPv6: true},
 		scored{IPRetrievable: http{URL: "https://icanhazip.com/"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://wgetip.com/"}, Weight: 3.0, IPv4: true, IPv6: true},
