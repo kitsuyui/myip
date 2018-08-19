@@ -3,7 +3,6 @@ package stun_resolver
 import (
 	"fmt"
 	"net"
-	"time"
 
 	"github.com/gortc/stun"
 	"github.com/kitsuyui/myip/base"
@@ -20,9 +19,8 @@ func (p STUNDetector) RetrieveIP() (net.IP, error) {
 	if err != nil {
 		return nil, &base.NotRetrievedError{}
 	}
-	deadline := time.Now().AddDate(0, 0, 1)
 	var err2 error
-	if err := c.Do(stun.MustBuild(stun.TransactionID, stun.BindingRequest), deadline, func(res stun.Event) {
+	if err := c.Do(stun.MustBuild(stun.TransactionID, stun.BindingRequest), func(res stun.Event) {
 		if res.Error != nil {
 			err2 = &base.NotRetrievedError{}
 			return
