@@ -3,7 +3,7 @@ jobs:
   test:
     working_directory: /go/src/github.com/kitsuyui/myip
     docker:
-      - image: golang:1.11.0-stretch@sha256:853b175abc912070b97b09cb474a5b2bcf9b5c9000a0ce05454fe4d8e5d3159c
+      - image: golang:1.11.0-stretch@sha256:e2c46a7511258f976914b6b5aa69c66f6245db00eed5df406d7b01cb9d0d3af5
     steps:
       - checkout
       - setup_remote_docker
@@ -16,7 +16,7 @@ jobs:
   release:
     working_directory: /go/src/github.com/kitsuyui/myip
     docker:
-      - image: golang:1.11.0-stretch@sha256:853b175abc912070b97b09cb474a5b2bcf9b5c9000a0ce05454fe4d8e5d3159c
+      - image: golang:1.11.0-stretch@sha256:e2c46a7511258f976914b6b5aa69c66f6245db00eed5df406d7b01cb9d0d3af5
     steps:
       - checkout
       - setup_remote_docker
