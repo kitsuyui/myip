@@ -1,5 +1,6 @@
 # myip
 
+Global IP detection tool for who has paranoid skeptical.
 Show own Public IP (a.k.a. Global IP; WAN IP; External IP) with reliability by searching multiple way.
 
 [![CircleCI Status](https://circleci.com/gh/kitsuyui/myip.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/myip)
@@ -15,6 +16,9 @@ myip supports various way to IP resolving.
 - STUN
 
 c.f. https://github.com/kitsuyui/myip/blob/master/targets/targets.go
+
+And if many of these targets answer same, then it show as true IP.
+So this aims to be resistant for man-in-the-middle-attack or temporary service down.
 
 # Usage
 
