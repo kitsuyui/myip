@@ -45,7 +45,7 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 	} else {
 		logger.SetOutput(ioutil.Discard)
 	}
-	c := make(chan base.ScoredIP)
+	c := make(chan base.ScoredIPWithMaxScore)
 	defer close(c)
 	for _, sipr := range siprs {
 		sumOfWeight += sipr.Weight
@@ -65,6 +65,7 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 		for sip := range c {
 			key := sip.IP.String()
 			m[key] += sip.Score
+			sumOfWeight -= (sip.MaxScore - sip.Score)
 			currentScore := m[key] / sumOfWeight
 			if currentScore > threshold {
 				result <- base.ScoredIP{sip.IP, currentScore}
@@ -97,7 +98,7 @@ Options:
  -6 --ipv6               						 Prefer IPv6.
  -n --newline            						 Show IP with newline.
  -N --no-newline         						 Show IP without newline.
- -T=<rate> --threshold=<rate>  			 Threshold that must be exceeded by weighted votes [default: 0.5].
+ -T=<rate> --threshold=<rate>  			 Threshold that must be exceeded by weighted votes [default: 0.6].
  -t=<duration> --timeout=<duration>  Timeout [default: 3s].
 `
 	opts, err := docopt.ParseDoc(usage)
