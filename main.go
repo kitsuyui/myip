@@ -55,7 +55,7 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 				logger.Printf("Error:%s\ttype:%s\tweight:%1.1f\t%s", err, typeName(sipr.IPRetrievable), sipr.Weight, sipr.String())
 				return
 			}
-			logger.Printf("IP:%s\ttype:%s\tweight:%1.1f\t%s", sip.IP.String(), typeName(sipr.IPRetrievable), sipr.Weight, sipr.String())
+			logger.Printf("IP:%s\ttype:%s\tweight:%1.1f\t%s", sip.IP.String(), typeName(sipr.IPRetrievable), sip.Score, sipr.String())
 			c <- *sip
 		}(sipr)
 	}
