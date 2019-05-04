@@ -30,6 +30,12 @@ type ScoredIP struct {
 	Score float64
 }
 
+type ScoredIPWithMaxScore struct {
+	IP       net.IP
+	Score    float64
+	MaxScore float64
+}
+
 type IPRetrievable interface {
 	RetrieveIP() (*ScoredIP, error)
 	String() string
@@ -46,7 +52,7 @@ func (s ScoredIP) addWeight(weight float64) ScoredIP {
 	return ScoredIP{s.IP, s.Score * weight}
 }
 
-func (p ScoredIPRetrievable) RetriveIPWithScoring(ctx context.Context) (*ScoredIP, error) {
+func (p ScoredIPRetrievable) RetriveIPWithScoring(ctx context.Context) (*ScoredIPWithMaxScore, error) {
 	type Result struct {
 		ScoredIP *ScoredIP
 		Err      error
@@ -61,8 +67,11 @@ func (p ScoredIPRetrievable) RetriveIPWithScoring(ctx context.Context) (*ScoredI
 		return nil, &TimeoutError{}
 	case r := <-c:
 		if r.Err == nil {
-			scoredIP := r.ScoredIP.addWeight(p.Weight)
-			return &scoredIP, nil
+			return &ScoredIPWithMaxScore{
+				IP:       r.ScoredIP.IP,
+				Score:    p.Weight * r.ScoredIP.Score,
+				MaxScore: p.Weight,
+			}, nil
 		}
 		return nil, r.Err
 	}
