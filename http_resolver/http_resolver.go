@@ -1,6 +1,7 @@
 package http_resolver
 
 import (
+	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -12,6 +13,24 @@ import (
 
 type HTTPDetector struct {
 	URL string `json:"url"`
+}
+
+func scoreOfTLS(t *tls.ConnectionState) float64 {
+	if t == nil { // HTTP
+		return 0.1
+	}
+	switch t.Version {
+	case tls.VersionTLS13:
+		return 1.0
+	case tls.VersionTLS12:
+		return 0.8
+	case tls.VersionTLS11:
+		return 0.6
+	case tls.VersionTLS10:
+		return 0.4
+	default:
+		return 0.2
+	}
 }
 
 func (p HTTPDetector) RetrieveIP() (*base.ScoredIP, error) {
@@ -30,7 +49,7 @@ func (p HTTPDetector) RetrieveIP() (*base.ScoredIP, error) {
 	if ip == nil {
 		return nil, &base.NotRetrievedError{}
 	}
-	return &base.ScoredIP{ip, 1.0}, nil
+	return &base.ScoredIP{ip, scoreOfTLS(resp.TLS)}, nil
 }
 
 func (p HTTPDetector) String() string {
