@@ -10,7 +10,18 @@ import (
 )
 
 func TestSTUNSuccess(t *testing.T) {
-	h := STUNDetector{Host: "stun.l.google.com:19302", Protocol: "udp"}
+	h := STUNDetector{Host: "stun:stun.l.google.com:19302", Protocol: "udp"}
+	ip, err := h.RetrieveIP()
+	if err != nil {
+		t.Errorf("Should be succeed")
+	}
+	if ip == nil {
+		t.Errorf("IP must not nil")
+	}
+}
+
+func TestSTUNSSuccess(t *testing.T) {
+	h := STUNDetector{Host: "stuns:stun.sipnet.ru:5349", Protocol: "tcp"}
 	ip, err := h.RetrieveIP()
 	if err != nil {
 		t.Errorf("Should be succeed")
@@ -25,7 +36,7 @@ func TestSTUNFail(t *testing.T) {
 	timeout := 500 * time.Millisecond
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
-	h := STUNDetector{Host: "127.0.0.1:1000", Protocol: "udp"}
+	h := STUNDetector{Host: "stun:127.0.0.1:1000", Protocol: "udp"}
 	var err error
 	var ip net.IP
 	type Result struct {
@@ -55,6 +66,25 @@ func TestSTUNFail(t *testing.T) {
 func TestSTUNInvalidAddress(t *testing.T) {
 	h := STUNDetector{Host: "<>", Protocol: "udp"}
 	ip, err := h.RetrieveIP()
+	if err == nil {
+		t.Errorf("This should be error")
+	}
+	if ip != nil {
+		t.Errorf("IP should be nil when error")
+	}
+}
+
+func TestSTUNInvalidProtocol(t *testing.T) {
+	h := STUNDetector{Host: "stuns:<>", Protocol: "xxx"}
+	ip, err := h.RetrieveIP()
+	if err == nil {
+		t.Errorf("This should be error")
+	}
+	if ip != nil {
+		t.Errorf("IP should be nil when error")
+	}
+	h = STUNDetector{Host: "stun:<>", Protocol: "xxx"}
+	ip, err = h.RetrieveIP()
 	if err == nil {
 		t.Errorf("This should be error")
 	}

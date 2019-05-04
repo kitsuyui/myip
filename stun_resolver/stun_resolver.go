@@ -1,8 +1,10 @@
 package stun_resolver
 
 import (
+	"crypto/tls"
 	"fmt"
 	"net"
+	"strconv"
 
 	"github.com/gortc/stun"
 	"github.com/kitsuyui/myip/base"
@@ -15,7 +17,30 @@ type STUNDetector struct {
 
 func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	var ip net.IP
-	c, err := stun.Dial(p.Protocol, p.Host)
+	var conn net.Conn
+	var err error
+
+	uri, err := stun.ParseURI(p.Host)
+	if err != nil {
+		return nil, &base.NotRetrievedError{}
+	}
+	scheme := uri.Scheme
+	address := uri.Host + ":" + strconv.Itoa(uri.Port)
+	if scheme == stun.SchemeSecure {
+		cfg := &tls.Config{
+			ServerName: uri.Host,
+		}
+		conn, err = tls.Dial(p.Protocol, address, cfg)
+		if err != nil {
+			return nil, &base.NotRetrievedError{}
+		}
+	} else {
+		conn, err = net.Dial(p.Protocol, address)
+		if err != nil {
+			return nil, &base.NotRetrievedError{}
+		}
+	}
+	c, err := stun.NewClient(conn)
 	if err != nil {
 		return nil, &base.NotRetrievedError{}
 	}
@@ -35,7 +60,11 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 		return nil, &base.NotRetrievedError{}
 	}
 	defer c.Close()
-	return &base.ScoredIP{ip, 1.0}, nil
+	if scheme == stun.SchemeSecure {
+		return &base.ScoredIP{ip, 1.0}, nil
+	} else {
+		return &base.ScoredIP{ip, 0.1}, nil
+	}
 }
 
 func (p STUNDetector) String() string {
