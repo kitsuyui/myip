@@ -35,7 +35,7 @@ func TestSTUNFail(t *testing.T) {
 	c := make(chan Result)
 	go func() {
 		ip, err := h.RetrieveIP()
-		c <- Result{ip, err}
+		c <- Result{ip.IP, err}
 	}()
 	select {
 	case <-ctx.Done():

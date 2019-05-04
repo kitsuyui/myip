@@ -13,7 +13,7 @@ type STUNDetector struct {
 	Protocol string `json:"protocol"`
 }
 
-func (p STUNDetector) RetrieveIP() (net.IP, error) {
+func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	var ip net.IP
 	c, err := stun.Dial(p.Protocol, p.Host)
 	if err != nil {
@@ -35,7 +35,7 @@ func (p STUNDetector) RetrieveIP() (net.IP, error) {
 		return nil, &base.NotRetrievedError{}
 	}
 	defer c.Close()
-	return ip, nil
+	return &base.ScoredIP{ip, 1.0}, nil
 }
 
 func (p STUNDetector) String() string {

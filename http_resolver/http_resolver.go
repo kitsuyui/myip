@@ -14,7 +14,7 @@ type HTTPDetector struct {
 	URL string `json:"url"`
 }
 
-func (p HTTPDetector) RetrieveIP() (net.IP, error) {
+func (p HTTPDetector) RetrieveIP() (*base.ScoredIP, error) {
 	client := http.Client{}
 	resp, err := client.Get(p.URL)
 	if err != nil {
@@ -30,7 +30,7 @@ func (p HTTPDetector) RetrieveIP() (net.IP, error) {
 	if ip == nil {
 		return nil, &base.NotRetrievedError{}
 	}
-	return ip, nil
+	return &base.ScoredIP{ip, 1.0}, nil
 }
 
 func (p HTTPDetector) String() string {

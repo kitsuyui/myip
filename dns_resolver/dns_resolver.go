@@ -16,14 +16,14 @@ type DNSDetector struct {
 	QueryType        string `json:"queryType"`
 }
 
-func (p DNSDetector) RetrieveIP() (net.IP, error) {
+func (p DNSDetector) RetrieveIP() (*base.ScoredIP, error) {
 	if strings.ToUpper(p.QueryType) == "TXT" {
 		return p.RetrieveIPByTXTRecord()
 	}
 	return p.RetrieveIPByARecord()
 }
 
-func (p DNSDetector) RetrieveIPByARecord() (net.IP, error) {
+func (p DNSDetector) RetrieveIPByARecord() (*base.ScoredIP, error) {
 	c := dns.Client{}
 	m := dns.Msg{}
 	m.SetQuestion(p.LookupDomainName, dns.TypeA)
@@ -38,10 +38,10 @@ func (p DNSDetector) RetrieveIPByARecord() (net.IP, error) {
 	if arecord.A == nil {
 		return nil, &base.NotRetrievedError{}
 	}
-	return arecord.A, nil
+	return &base.ScoredIP{arecord.A, 1.0}, nil
 }
 
-func (p DNSDetector) RetrieveIPByTXTRecord() (net.IP, error) {
+func (p DNSDetector) RetrieveIPByTXTRecord() (*base.ScoredIP, error) {
 	c := dns.Client{}
 	m := dns.Msg{}
 	m.SetQuestion(p.LookupDomainName, dns.TypeTXT)
@@ -57,7 +57,7 @@ func (p DNSDetector) RetrieveIPByTXTRecord() (net.IP, error) {
 		return nil, &base.NotRetrievedError{}
 	}
 	ip := net.ParseIP(txtRecord.Txt[0])
-	return ip, nil
+	return &base.ScoredIP{ip, 1.0}, nil
 }
 
 func (p DNSDetector) String() string {

@@ -31,7 +31,7 @@ type ScoredIP struct {
 }
 
 type IPRetrievable interface {
-	RetrieveIP() (net.IP, error)
+	RetrieveIP() (*ScoredIP, error)
 	String() string
 }
 
@@ -42,20 +42,28 @@ type ScoredIPRetrievable struct {
 	IPv6   bool
 }
 
+func (s ScoredIP) addWeight(weight float64) ScoredIP {
+	return ScoredIP{s.IP, s.Score * weight}
+}
+
 func (p ScoredIPRetrievable) RetriveIPWithScoring(ctx context.Context) (*ScoredIP, error) {
 	type Result struct {
-		IP  net.IP
-		Err error
+		ScoredIP *ScoredIP
+		Err      error
 	}
 	c := make(chan Result)
 	go func() {
-		ip, err := p.RetrieveIP()
-		c <- Result{ip, err}
+		scoredIP, err := p.RetrieveIP()
+		c <- Result{scoredIP, err}
 	}()
 	select {
 	case <-ctx.Done():
 		return nil, &TimeoutError{}
 	case r := <-c:
-		return &ScoredIP{r.IP, p.Weight}, r.Err
+		if r.Err == nil {
+			scoredIP := r.ScoredIP.addWeight(p.Weight)
+			return &scoredIP, nil
+		}
+		return nil, r.Err
 	}
 }
