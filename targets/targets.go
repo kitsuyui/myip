@@ -13,14 +13,14 @@ func IPRetrievables() []base.ScoredIPRetrievable {
 	type dns = dns_resolver.DNSDetector
 	type stun = stun_resolver.STUNDetector
 	return []base.ScoredIPRetrievable{
-		scored{IPRetrievable: http{URL: "http://ipecho.net/plain"}, Weight: 0.5, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://inet-ip.info/ip"}, Weight: 0.5, IPv4: true, IPv6: false},
-		// scored{IPRetrievable: http{URL: "http://eth0.me/"}, Weight: 0.5, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://ipcheck.ieserver.net/"}, Weight: 0.5, IPv4: true, IPv6: false},
-		scored{IPRetrievable: http{URL: "http://ifconfig.me/ip"}, Weight: 0.5, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://smart-ip.net/myip"}, Weight: 0.5, IPv4: true, IPv6: true},
-		scored{IPRetrievable: http{URL: "http://whatismyip.akamai.com/"}, Weight: 1.0, IPv4: true, IPv6: false},
+		scored{IPRetrievable: http{URL: "http://whatismyip.akamai.com/"}, Weight: 0.5, IPv4: true, IPv6: false},
 
+		scored{IPRetrievable: http{URL: "https://ipecho.net/plain"}, Weight: 3.0, IPv4: true, IPv6: false},
+		scored{IPRetrievable: http{URL: "https://eth0.me/"}, Weight: 3.0, IPv4: true, IPv6: false},
+		scored{IPRetrievable: http{URL: "https://ifconfig.me/ip"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://checkip.amazonaws.com/"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://bot.whatismyipaddress.com/"}, Weight: 3.0, IPv4: true, IPv6: true},
 		scored{IPRetrievable: http{URL: "https://icanhazip.com/"}, Weight: 3.0, IPv4: true, IPv6: false},
@@ -29,7 +29,7 @@ func IPRetrievables() []base.ScoredIPRetrievable {
 		// scored{IPRetrievable: http{URL: "https://4.ifcfg.me/ip"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://ip.tyk.nu/"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://tnx.nl/ip"}, Weight: 3.0, IPv4: true, IPv6: false},
-		// scored{IPRetrievable: http{URL: "https://l2.io/ip"}, Weight: 3.0, IPv4: true, IPv6: false},
+		scored{IPRetrievable: http{URL: "https://l2.io/ip"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://api.ipify.org/"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://myexternalip.com/raw"}, Weight: 3.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://icanhazip.com"}, Weight: 3.0, IPv4: true, IPv6: false},
