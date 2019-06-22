@@ -145,7 +145,7 @@ $ go build
 
 ### Source
 
-The 3-Clause BSD License. See also LISENCE file.
+The 3-Clause BSD License. See also LICENSE file.
 
 ### statically linked libraries:
 
