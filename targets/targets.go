@@ -24,16 +24,15 @@ func IPRetrievables() []base.ScoredIPRetrievable {
 		scored{IPRetrievable: http{URL: "https://ifconfig.me/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://checkip.amazonaws.com/"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://bot.whatismyipaddress.com/"}, Weight: 1.0, IPv4: true, IPv6: true},
-		scored{IPRetrievable: http{URL: "https://icanhazip.com/"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://wgetip.com/"}, Weight: 1.0, IPv4: true, IPv6: true},
-		scored{IPRetrievable: http{URL: "https://ident.me/"}, Weight: 1.0, IPv4: true, IPv6: false},
+		scored{IPRetrievable: http{URL: "https://ident.me/"}, Weight: 1.0, IPv4: true, IPv6: true}, // document: https://api.ident.me/
 		// scored{IPRetrievable: http{URL: "https://4.ifcfg.me/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://ip.tyk.nu/"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://tnx.nl/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://l2.io/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://api.ipify.org/"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://myexternalip.com/raw"}, Weight: 1.0, IPv4: true, IPv6: false},
-		scored{IPRetrievable: http{URL: "https://icanhazip.com"}, Weight: 1.0, IPv4: true, IPv6: false},
+		scored{IPRetrievable: http{URL: "https://icanhazip.com"}, Weight: 1.0, IPv4: true, IPv6: true}, // document: https://major.io/icanhazip-com-faq/
 		// scored{IPRetrievable: http{URL: "https://ifcfg.me/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://ifconfig.io/ip"}, Weight: 1.0, IPv4: true, IPv6: true},
 		scored{IPRetrievable: http{URL: "https://ifconfig.co/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
