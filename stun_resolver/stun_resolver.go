@@ -6,8 +6,8 @@ import (
 	"net"
 	"strconv"
 
-	"gortc.io/stun"
 	"github.com/kitsuyui/myip/base"
+	"gortc.io/stun"
 )
 
 type STUNDetector struct {
