@@ -94,5 +94,9 @@ func TestSTUNInvalidProtocol(t *testing.T) {
 }
 
 func TestGetString(t *testing.T) {
-	STUNDetector{Host: "stun.l.google.com:19302", Protocol: "udp"}.String()
+	result := STUNDetector{Host: "stun.l.google.com:19302", Protocol: "udp"}.String()
+	tobe := "stun.l.google.com:19302"
+	if result != tobe {
+		t.Errorf("The result must be %s", tobe)
+	}
 }
