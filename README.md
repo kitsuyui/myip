@@ -118,6 +118,15 @@ It has no DLL dependency. So you can use it by just downloading.
 1. Choose your OS here: https://github.com/kitsuyui/myip/releases
 2. Download and make it executable
 
+
+### Additional step on macOS
+
+If you encounter such as following:
+
+<img width="372" alt="screen-shot-macOS-quarantine" src="https://user-images.githubusercontent.com/2596972/175803758-6deebbe7-f574-42dd-b8c6-1361c6356f4d.png">
+
+3. Execute `xattr -d com.apple.quarantine ./myip` to remove quarantine flag set on the binary.
+
 ### Example command
 
 ```console
