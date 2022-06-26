@@ -3,9 +3,9 @@
 Global IP detection tool for who has paranoid skeptical.
 Show own Public IP (a.k.a. Global IP; WAN IP; External IP) with reliability by searching multiple way.
 
-[![CircleCI Status](https://circleci.com/gh/kitsuyui/myip.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/myip)
+[![Github All Releases](https://img.shields.io/github/downloads/kitsuyui/scraper/total.svg)](https://github.com/kitsuyui/scraper/releases/latest)
 [![Codecov Status](https://img.shields.io/codecov/c/github/kitsuyui/myip.svg)](https://codecov.io/github/kitsuyui/myip/)
-[![Github All Releases](https://img.shields.io/github/downloads/kitsuyui/myip/total.svg)](https://github.com/kitsuyui/myip/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/kitsuyui/myip/total.svg)](https://github.com/kitsuyui/myip/releases/latest)
 
 # Mechanism
 
