@@ -70,6 +70,14 @@ func TestDNSTXTRecordFailWhenInvalidLookup(t *testing.T) {
 	}
 }
 func TestGetString(t *testing.T) {
-	DNSDetector{LookupDomainName: "dummy.myaddr.l.google.com.", Resolver: "ns1.google.com:53", QueryType: "TXT"}.String()
-	DNSDetector{LookupDomainName: "dummy.opendns.com.", Resolver: "resolver1.opendns.com:53"}.String()
+	result := DNSDetector{LookupDomainName: "dummy.myaddr.l.google.com.", Resolver: "ns1.google.com:53", QueryType: "TXT"}.String()
+	tobe := "TXT,dummy.myaddr.l.google.com.,ns1.google.com:53"
+	if result != tobe {
+		t.Errorf("The result must be %s", tobe)
+	}
+	result = DNSDetector{LookupDomainName: "dummy.opendns.com.", Resolver: "resolver1.opendns.com:53"}.String()
+	tobe = "A,dummy.opendns.com.,resolver1.opendns.com:53"
+	if result != tobe {
+		t.Errorf("The result must be %s", tobe)
+	}
 }

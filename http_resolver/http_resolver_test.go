@@ -39,7 +39,10 @@ func TestHTTPFail2(t *testing.T) {
 }
 
 func TestGetString(t *testing.T) {
-	HTTPDetector{URL: "http://example.com/"}.String()
+	result := HTTPDetector{URL: "http://example.com/"}.String()
+	if result != "http://example.com/" {
+		t.Errorf("The result must be http://example.com/")
+	}
 }
 
 func TestScoreOfTLS(t *testing.T) {

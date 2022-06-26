@@ -2,7 +2,6 @@ package http_resolver
 
 import (
 	"crypto/tls"
-	"fmt"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -53,5 +52,5 @@ func (p HTTPDetector) RetrieveIP() (*base.ScoredIP, error) {
 }
 
 func (p HTTPDetector) String() string {
-	return fmt.Sprintf("%s", p.URL)
+	return p.URL
 }
