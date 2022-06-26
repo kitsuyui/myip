@@ -103,7 +103,7 @@ Options:
 `
 	opts, err := docopt.ParseDoc(usage)
 	if err != nil {
-		fmt.Errorf("%s", err)
+		log.Fatal(err)
 	}
 	if showVersion, _ := opts.Bool("--version"); showVersion {
 		println(version)
@@ -122,12 +122,12 @@ Options:
 	}
 	threshold, err := opts.Float64("--threshold")
 	if err != nil {
-		fmt.Errorf("%s", err)
+		log.Fatal(err)
 	}
 
 	timeoutStr, err := opts.String("--timeout")
 	if err != nil {
-		fmt.Errorf("%s", err)
+		log.Fatal(err)
 	}
 
 	var duration time.Duration
@@ -135,7 +135,7 @@ Options:
 	if err != nil {
 		duration, err = time.ParseDuration(timeoutStr)
 		if err != nil {
-			fmt.Errorf("%s", err)
+			log.Fatal(err)
 		}
 	} else {
 		duration = time.Duration(f) * time.Second
