@@ -49,7 +49,7 @@ func (p HTTPDetector) RetrieveIP() (*base.ScoredIP, error) {
 	if ip == nil {
 		return nil, &base.NotRetrievedError{}
 	}
-	return &base.ScoredIP{ip, scoreOfTLS(resp.TLS)}, nil
+	return &base.ScoredIP{IP: ip, Score: scoreOfTLS(resp.TLS)}, nil
 }
 
 func (p HTTPDetector) String() string {

@@ -61,9 +61,9 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	}
 	defer c.Close()
 	if scheme == stun.SchemeSecure {
-		return &base.ScoredIP{ip, 1.0}, nil
+		return &base.ScoredIP{IP: ip, Score: 1.0}, nil
 	} else {
-		return &base.ScoredIP{ip, 0.1}, nil
+		return &base.ScoredIP{IP: ip, Score: 0.1}, nil
 	}
 }
 

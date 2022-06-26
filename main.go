@@ -68,7 +68,7 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 			sumOfWeight -= (sip.MaxScore - sip.Score)
 			currentScore := m[key] / sumOfWeight
 			if currentScore > threshold {
-				result <- base.ScoredIP{sip.IP, currentScore}
+				result <- base.ScoredIP{IP: sip.IP, Score: currentScore}
 			}
 		}
 	}()
