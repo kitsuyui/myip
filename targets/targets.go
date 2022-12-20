@@ -22,7 +22,6 @@ func IPRetrievables() []base.ScoredIPRetrievable {
 		scored{IPRetrievable: http{URL: "https://checkip.amazonaws.com/"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://wgetip.com/"}, Weight: 1.0, IPv4: true, IPv6: true},
 		scored{IPRetrievable: http{URL: "https://ip.tyk.nu/"}, Weight: 1.0, IPv4: true, IPv6: false},
-		scored{IPRetrievable: http{URL: "https://tnx.nl/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://l2.io/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://api.ipify.org/"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "https://myexternalip.com/raw"}, Weight: 1.0, IPv4: true, IPv6: false},
