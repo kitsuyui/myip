@@ -25,6 +25,9 @@ jobs:
       - name: test
         run: go test -v -cover -race -covermode=atomic -coverprofile=coverage.out ./...
 
+      - name: build
+        run: go build ./...
+
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
