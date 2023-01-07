@@ -6,7 +6,7 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/kitsuyui/myip/base"
+	"github.com/kitsuyui/myip/resolvers/base"
 	"gortc.io/stun"
 )
 

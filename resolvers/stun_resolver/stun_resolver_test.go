@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kitsuyui/myip/base"
+	"github.com/kitsuyui/myip/resolvers/base"
 )
 
 func TestSTUNSuccess(t *testing.T) {

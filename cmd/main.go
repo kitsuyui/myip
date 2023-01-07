@@ -5,17 +5,18 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+
 	"log"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/docopt/docopt-go"
-	"github.com/kitsuyui/myip/base"
-	"github.com/kitsuyui/myip/dns_resolver"
-	"github.com/kitsuyui/myip/http_resolver"
-	"github.com/kitsuyui/myip/stun_resolver"
-	"github.com/kitsuyui/myip/targets"
+	"github.com/kitsuyui/myip/resolvers/base"
+	"github.com/kitsuyui/myip/resolvers/dns_resolver"
+	"github.com/kitsuyui/myip/resolvers/http_resolver"
+	"github.com/kitsuyui/myip/resolvers/stun_resolver"
+	"github.com/kitsuyui/myip/resolvers/targets"
 )
 
 var version string
