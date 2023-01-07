@@ -14,7 +14,7 @@ jobs:
         uses: actions/setup-go@v3
 
       - name: install dependencies
-        run: go get -v -t -d ./...
+        run: go mod tidy
 
       - name: lint
         run: go vet ./...
