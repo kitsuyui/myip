@@ -102,6 +102,4 @@ $RECYCLE.BIN/
 go.work
 
 
-myip
-myip_*
-go-myip
+dist/

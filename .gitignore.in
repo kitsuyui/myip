@@ -8,6 +8,4 @@ gibo dump macOS
 gibo dump Windows
 gibo dump Linux
 gibo dump Go
-echo 'myip'
-echo 'myip_*'
-echo 'go-myip'
+echo 'dist/'
