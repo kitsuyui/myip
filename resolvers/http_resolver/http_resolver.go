@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/kitsuyui/myip/base"
+	"github.com/kitsuyui/myip/resolvers/base"
 )
 
 type HTTPDetector struct {

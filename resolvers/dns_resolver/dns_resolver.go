@@ -7,7 +7,7 @@ import (
 
 	"github.com/miekg/dns"
 
-	"github.com/kitsuyui/myip/base"
+	"github.com/kitsuyui/myip/resolvers/base"
 )
 
 type DNSDetector struct {

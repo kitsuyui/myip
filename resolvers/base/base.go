@@ -1,7 +1,9 @@
 package base
 
-import "net"
-import "context"
+import (
+	"context"
+	"net"
+)
 
 type NotRetrievedError struct {
 	Message string
