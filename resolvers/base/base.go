@@ -54,7 +54,7 @@ func (s ScoredIP) addWeight(weight float64) ScoredIP {
 	return ScoredIP{s.IP, s.Score * weight}
 }
 
-func (p ScoredIPRetrievable) RetriveIPWithScoring(ctx context.Context) (*ScoredIPWithMaxScore, error) {
+func (p ScoredIPRetrievable) RetrieveIPWithScoring(ctx context.Context) (*ScoredIPWithMaxScore, error) {
 	type Result struct {
 		ScoredIP *ScoredIP
 		Err      error

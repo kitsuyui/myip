@@ -51,7 +51,7 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 	for _, sipr := range siprs {
 		sumOfWeight += sipr.Weight
 		go func(sipr base.ScoredIPRetrievable) {
-			sip, err := sipr.RetriveIPWithScoring(ctx)
+			sip, err := sipr.RetrieveIPWithScoring(ctx)
 			if err != nil {
 				logger.Printf("Error:%s\ttype:%s\tweight:%1.1f\t%s", err, typeName(sipr.IPRetrievable), sipr.Weight, sipr.String())
 				return
