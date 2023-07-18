@@ -1,3 +1,5 @@
+// HTTP resolver
+// Detect IP address by HTTP / HTTPS response
 package http_resolver
 
 import (
