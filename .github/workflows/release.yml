@@ -24,7 +24,7 @@ jobs:
 
       - name: release
         if: startsWith(github.event.ref, 'refs/tags')
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
           version: "~> v2"
