@@ -55,4 +55,4 @@ jobs:
         if: github.event_name == 'release' && !github.event.release.prerelease
         uses: softprops/action-gh-release@v2
         with:
-          files: ./dist/*
+          files: ./dist/**/*
