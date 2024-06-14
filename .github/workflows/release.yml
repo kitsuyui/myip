@@ -2,12 +2,11 @@
 name: release
 
 on:
-  push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
-  create:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
+  pull_request:
+    types: [opened, synchronize, reopened]
+  release:
+    # "released" events are emitted either when directly be released or be edited from pre-released.
+    types: [prereleased, released]
 
 jobs:
   goreleaser:
@@ -23,7 +22,6 @@ jobs:
           check-latest: true
 
       - name: release
-        if: startsWith(github.event.ref, 'refs/tags')
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
@@ -35,5 +33,26 @@ jobs:
       - name: Upload assets
         uses: actions/upload-artifact@v4
         with:
-          name: release-assets
+          name: release-assets-${{ github.sha }}
           path: dist/*
+          retention-days: 1
+
+  deploy:
+    needs: goreleaser
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-assets-${{ github.sha }}
+          merge-multiple: true
+          path: dist/*
+
+      - name: List
+        run: find ./dist
+
+      - name: Release
+        if: github.event_name == 'release' && !github.event.release.prerelease
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./dist/*
