@@ -36,11 +36,11 @@ jobs:
         run: go build ./...
 
       - name: cross build
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: latest
-          args: build --skip-validate --skip-post-hooks --skip-before --snapshot --rm-dist
+          version: "~> v2"
+          args: build --snapshot --clean
 
       - uses: codecov/codecov-action@v4
         with:
