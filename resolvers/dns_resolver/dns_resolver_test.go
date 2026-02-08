@@ -5,7 +5,7 @@ import (
 )
 
 func TestDNSARecordSuccess(t *testing.T) {
-	d := DNSDetector{LookupDomainName: "myip.opendns.com.", Resolver: "resolver1.opendns.com:53"}
+	d := DNSDetector{LookupDomainName: "myip.opendns.com.", Resolver: "208.67.222.222:53"}
 	ip, err := d.RetrieveIP()
 	if err != nil {
 		t.Errorf("DNS A Record Query should be succeed")
