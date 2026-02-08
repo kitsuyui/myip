@@ -10,7 +10,7 @@ import (
 )
 
 func TestSTUNSuccess(t *testing.T) {
-	h := STUNDetector{Host: "stun:stun.l.google.com:19302", Protocol: "udp"}
+	h := STUNDetector{Host: "stun:stun.cloudflare.com:3478", Protocol: "udp"}
 	ip, err := h.RetrieveIP()
 	if err != nil {
 		t.Errorf("Should be succeed")
