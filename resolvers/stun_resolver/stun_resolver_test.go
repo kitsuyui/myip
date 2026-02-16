@@ -21,7 +21,7 @@ func TestSTUNSuccess(t *testing.T) {
 }
 
 func TestSTUNSSuccess(t *testing.T) {
-	h := STUNDetector{Host: "stuns:stun.sipnet.ru:5349", Protocol: "tcp"}
+	h := STUNDetector{Host: "stuns:turn.cloudflare.com:5349", Protocol: "tcp"}
 	ip, err := h.RetrieveIP()
 	if err != nil {
 		t.Errorf("Should be succeed")
