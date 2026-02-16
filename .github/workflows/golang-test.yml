@@ -42,10 +42,3 @@ jobs:
           version: "~> v2"
           args: build --snapshot --clean
 
-      - uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.out
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
