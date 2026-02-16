@@ -3,7 +3,7 @@
 Global IP detection tool for who has paranoid skeptical.
 Show own Public IP (a.k.a. Global IP; WAN IP; External IP) with reliability by searching multiple way.
 
-[![Codecov Status](https://img.shields.io/codecov/c/github/kitsuyui/myip.svg)](https://codecov.io/github/kitsuyui/myip/)
+![Coverage](https://raw.githubusercontent.com/kitsuyui/octocov-central/main/badges/kitsuyui/myip/coverage.svg)
 [![Downloads](https://img.shields.io/github/downloads/kitsuyui/myip/total.svg)](https://github.com/kitsuyui/myip/releases/latest)
 
 # Mechanism
