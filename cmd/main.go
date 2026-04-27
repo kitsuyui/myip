@@ -7,8 +7,10 @@ import (
 	"io/ioutil"
 
 	"log"
+	"net"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/docopt/docopt-go"
@@ -46,35 +48,65 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 	} else {
 		logger.SetOutput(ioutil.Discard)
 	}
-	c := make(chan base.ScoredIPWithMaxScore)
-	defer close(c)
+	type result struct {
+		scoredIP base.ScoredIPWithMaxScore
+		source   base.ScoredIPRetrievable
+		err      error
+	}
+	c := make(chan result, len(siprs))
+	var wg sync.WaitGroup
 	for _, sipr := range siprs {
 		sumOfWeight += sipr.Weight
+		wg.Add(1)
 		go func(sipr base.ScoredIPRetrievable) {
+			defer wg.Done()
 			sip, err := sipr.RetrieveIPWithScoring(ctx)
 			if err != nil {
 				logger.Printf("Error:%s\ttype:%s\tweight:%1.1f\t%s", err, typeName(sipr.IPRetrievable), sipr.Weight, sipr.String())
+				c <- result{source: sipr, err: err}
 				return
 			}
 			logger.Printf("IP:%s\ttype:%s\tweight:%1.1f\t%s", sip.IP.String(), typeName(sipr.IPRetrievable), sip.Score, sipr.String())
-			c <- *sip
+			c <- result{scoredIP: *sip, source: sipr}
 		}(sipr)
 	}
-	result := make(chan base.ScoredIP)
-	defer close(result)
 	go func() {
-		for sip := range c {
-			key := sip.IP.String()
-			m[key] += sip.Score
-			sumOfWeight -= (sip.MaxScore - sip.Score)
-			currentScore := m[key] / sumOfWeight
+		wg.Wait()
+		close(c)
+	}()
+	winner := func() (*base.ScoredIP, bool) {
+		if sumOfWeight <= 0 {
+			return nil, false
+		}
+		for ip, score := range m {
+			currentScore := score / sumOfWeight
 			if currentScore > threshold {
-				result <- base.ScoredIP{IP: sip.IP, Score: currentScore}
+				return &base.ScoredIP{IP: net.ParseIP(ip), Score: currentScore}, true
 			}
 		}
-	}()
-	sip := <-result
-	return &sip, nil
+		return nil, false
+	}
+	for {
+		select {
+		case <-ctx.Done():
+			return nil, &base.TimeoutError{}
+		case r, ok := <-c:
+			if !ok {
+				return nil, &base.NotRetrievedError{}
+			}
+			if r.err != nil {
+				sumOfWeight -= r.source.Weight
+			} else {
+				key := r.scoredIP.IP.String()
+				m[key] += r.scoredIP.Score
+				sumOfWeight -= (r.scoredIP.MaxScore - r.scoredIP.Score)
+			}
+			if sip, ok := winner(); ok {
+				cancel()
+				return sip, nil
+			}
+		}
+	}
 }
 
 var timeout = flag.Duration("timeout", 3*time.Second, "Timeout duration.")

@@ -59,7 +59,7 @@ func (p ScoredIPRetrievable) RetrieveIPWithScoring(ctx context.Context) (*Scored
 		ScoredIP *ScoredIP
 		Err      error
 	}
-	c := make(chan Result)
+	c := make(chan Result, 1)
 	go func() {
 		scoredIP, err := p.RetrieveIP()
 		c <- Result{scoredIP, err}
