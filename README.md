@@ -95,7 +95,7 @@ Options:
  -6 --ipv6               						 Prefer IPv6.
  -n --newline            						 Show IP with newline.
  -N --no-newline         						 Show IP without newline.
- -T=<rate> --threshold=<rate>  			 Threshold that must be exceeded by weighted votes [default: 0.5].
+ -T=<rate> --threshold=<rate>  			 Threshold that must be exceeded by weighted votes [default: 0.6].
  -t=<duration> --timeout=<duration>  Timeout [default: 3s].
 ```
 
