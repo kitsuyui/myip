@@ -8,6 +8,10 @@ on:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
+
 jobs:
   test:
     name: test
@@ -41,4 +45,3 @@ jobs:
           distribution: goreleaser
           version: "~> v2"
           args: build --snapshot --clean
-
