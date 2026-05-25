@@ -33,7 +33,7 @@ func typeName(ipr interface{}) string {
 	case stun_resolver.STUNDetector:
 		return "stun"
 	}
-	return ""
+	return fmt.Sprintf("%T", ipr)
 }
 
 func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, timeout time.Duration, threshold float64) (*base.ScoredIP, error) {
