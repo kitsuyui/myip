@@ -69,6 +69,17 @@ func TestDNSTXTRecordFailWhenInvalidLookup(t *testing.T) {
 		t.Errorf("IP should be nil when error")
 	}
 }
+func TestUnsupportedQueryType(t *testing.T) {
+	d := DNSDetector{LookupDomainName: "example.com.", Resolver: "8.8.8.8:53", QueryType: "MX"}
+	ip, err := d.RetrieveIP()
+	if err == nil {
+		t.Errorf("Unsupported QueryType should return an error")
+	}
+	if ip != nil {
+		t.Errorf("IP should be nil when error")
+	}
+}
+
 func TestGetString(t *testing.T) {
 	result := DNSDetector{LookupDomainName: "dummy.myaddr.l.google.com.", Resolver: "ns1.google.com:53", QueryType: "TXT"}.String()
 	tobe := "TXT,dummy.myaddr.l.google.com.,ns1.google.com:53"
