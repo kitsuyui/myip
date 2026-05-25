@@ -12,6 +12,12 @@ import (
 	"github.com/kitsuyui/myip/resolvers/base"
 )
 
+// Supported QueryType values for DNSDetector.
+const (
+	QueryTypeA   = "A"
+	QueryTypeTXT = "TXT"
+)
+
 type DNSDetector struct {
 	LookupDomainName string `json:"name"`
 	Resolver         string `json:"server"`
@@ -19,10 +25,14 @@ type DNSDetector struct {
 }
 
 func (p DNSDetector) RetrieveIP() (*base.ScoredIP, error) {
-	if strings.ToUpper(p.QueryType) == "TXT" {
+	switch strings.ToUpper(p.QueryType) {
+	case QueryTypeTXT:
 		return p.RetrieveIPByTXTRecord()
+	case QueryTypeA, "":
+		return p.RetrieveIPByARecord()
+	default:
+		return nil, &base.NotRetrievedError{Message: fmt.Sprintf("unsupported QueryType: %q (supported: %q, %q)", p.QueryType, QueryTypeA, QueryTypeTXT)}
 	}
-	return p.RetrieveIPByARecord()
 }
 
 func (p DNSDetector) RetrieveIPByARecord() (*base.ScoredIP, error) {
@@ -59,13 +69,16 @@ func (p DNSDetector) RetrieveIPByTXTRecord() (*base.ScoredIP, error) {
 		return nil, &base.NotRetrievedError{}
 	}
 	ip := net.ParseIP(txtRecord.Txt[0])
+	if ip == nil {
+		return nil, &base.NotRetrievedError{Message: fmt.Sprintf("TXT record %q is not a valid IP address", txtRecord.Txt[0])}
+	}
 	return &base.ScoredIP{IP: ip, Score: 1.0}, nil
 }
 
 func (p DNSDetector) String() string {
-	qt := "A"
-	if strings.ToUpper(p.QueryType) == "TXT" {
-		qt = "TXT"
+	qt := QueryTypeA
+	if strings.ToUpper(p.QueryType) == QueryTypeTXT {
+		qt = QueryTypeTXT
 	}
 	return fmt.Sprintf("%s,%s,%s", qt, p.LookupDomainName, p.Resolver)
 }
