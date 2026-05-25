@@ -62,6 +62,40 @@ func TestPickUpRequiresScoreToExceedThreshold(t *testing.T) {
 	}
 }
 
+func TestPickWinnerChoosesHighestScoreDeterministically(t *testing.T) {
+	scores := map[string]float64{
+		"192.0.2.1": 1.0,
+		"192.0.2.2": 2.0,
+	}
+
+	for i := 0; i < 100; i++ {
+		sip, ok := pickWinner(scores, 3.0, 0.2)
+		if !ok {
+			t.Fatal("expected winner")
+		}
+		if sip.IP.String() != "192.0.2.2" {
+			t.Fatalf("unexpected IP: %s", sip.IP.String())
+		}
+	}
+}
+
+func TestPickWinnerBreaksScoreTiesByIP(t *testing.T) {
+	scores := map[string]float64{
+		"192.0.2.2": 1.0,
+		"192.0.2.1": 1.0,
+	}
+
+	for i := 0; i < 100; i++ {
+		sip, ok := pickWinner(scores, 2.0, 0.2)
+		if !ok {
+			t.Fatal("expected winner")
+		}
+		if sip.IP.String() != "192.0.2.1" {
+			t.Fatalf("unexpected IP: %s", sip.IP.String())
+		}
+	}
+}
+
 func TestPickUpDoesNotPanicOnLateResultAfterWinner(t *testing.T) {
 	retrievers := []base.ScoredIPRetrievable{
 		{IPRetrievable: fakeRetriever{ip: "192.0.2.1", score: 1.0}, Weight: 1.0},

@@ -75,16 +75,7 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 		close(c)
 	}()
 	winner := func() (*base.ScoredIP, bool) {
-		if sumOfWeight <= 0 {
-			return nil, false
-		}
-		for ip, score := range m {
-			currentScore := score / sumOfWeight
-			if currentScore > threshold {
-				return &base.ScoredIP{IP: net.ParseIP(ip), Score: currentScore}, true
-			}
-		}
-		return nil, false
+		return pickWinner(m, sumOfWeight, threshold)
 	}
 	for {
 		select {
@@ -107,6 +98,31 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 			}
 		}
 	}
+}
+
+func pickWinner(scores map[string]float64, sumOfWeight float64, threshold float64) (*base.ScoredIP, bool) {
+	if sumOfWeight <= 0 {
+		return nil, false
+	}
+
+	var winnerIP string
+	var winnerScore float64
+	found := false
+	for ip, score := range scores {
+		currentScore := score / sumOfWeight
+		if currentScore <= threshold {
+			continue
+		}
+		if !found || currentScore > winnerScore || currentScore == winnerScore && ip < winnerIP {
+			winnerIP = ip
+			winnerScore = currentScore
+			found = true
+		}
+	}
+	if !found {
+		return nil, false
+	}
+	return &base.ScoredIP{IP: net.ParseIP(winnerIP), Score: winnerScore}, true
 }
 
 var timeout = flag.Duration("timeout", 3*time.Second, "Timeout duration.")
