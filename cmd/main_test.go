@@ -48,6 +48,20 @@ func TestPickUpReturnsErrorWhenNoResultExceedsThreshold(t *testing.T) {
 	}
 }
 
+func TestPickUpRequiresScoreToExceedThreshold(t *testing.T) {
+	retrievers := []base.ScoredIPRetrievable{
+		{IPRetrievable: fakeRetriever{ip: "192.0.2.1", score: 1.0}, Weight: 1.0},
+	}
+
+	_, err := pickUpFirstItemThatExceededThreshold(retrievers, time.Second, 1.0)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if _, ok := err.(*base.NotRetrievedError); !ok {
+		t.Fatalf("expected NotRetrievedError, got %T", err)
+	}
+}
+
 func TestPickUpDoesNotPanicOnLateResultAfterWinner(t *testing.T) {
 	retrievers := []base.ScoredIPRetrievable{
 		{IPRetrievable: fakeRetriever{ip: "192.0.2.1", score: 1.0}, Weight: 1.0},
