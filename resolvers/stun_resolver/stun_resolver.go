@@ -8,10 +8,15 @@ import (
 	"fmt"
 	"net"
 	"strconv"
+	"time"
 
 	"github.com/kitsuyui/myip/resolvers/base"
 	"gortc.io/stun"
 )
+
+// dialTimeout limits each STUN dial so goroutines in base.RetrieveIPWithScoring
+// cannot outlive the caller's context deadline by more than this duration.
+const dialTimeout = 5 * time.Second
 
 type STUNDetector struct {
 	Host     string `json:"host"`
@@ -29,16 +34,17 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	}
 	scheme := uri.Scheme
 	address := uri.Host + ":" + strconv.Itoa(uri.Port)
+	dialer := &net.Dialer{Timeout: dialTimeout}
 	if scheme == stun.SchemeSecure {
 		cfg := &tls.Config{
 			ServerName: uri.Host,
 		}
-		conn, err = tls.Dial(p.Protocol, address, cfg)
+		conn, err = tls.DialWithDialer(dialer, p.Protocol, address, cfg)
 		if err != nil {
 			return nil, &base.NotRetrievedError{}
 		}
 	} else {
-		conn, err = net.Dial(p.Protocol, address)
+		conn, err = dialer.Dial(p.Protocol, address)
 		if err != nil {
 			return nil, &base.NotRetrievedError{}
 		}
