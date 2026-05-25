@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 
 	"log"
 	"net"
@@ -46,7 +46,7 @@ func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, time
 	if verboseMode {
 		logger.SetOutput(os.Stderr)
 	} else {
-		logger.SetOutput(ioutil.Discard)
+		logger.SetOutput(io.Discard)
 	}
 	type result struct {
 		scoredIP base.ScoredIPWithMaxScore

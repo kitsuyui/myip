@@ -4,7 +4,7 @@ package http_resolver
 
 import (
 	"crypto/tls"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 	"strings"
@@ -41,7 +41,7 @@ func (p HTTPDetector) RetrieveIP() (*base.ScoredIP, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
