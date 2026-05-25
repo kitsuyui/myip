@@ -180,6 +180,11 @@ Options:
 			fmt.Println("")
 		}
 	} else {
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		} else {
+			fmt.Fprintln(os.Stderr, "error: consensus threshold not reached")
+		}
 		os.Exit(1)
 	}
 }
