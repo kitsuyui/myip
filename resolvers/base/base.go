@@ -43,15 +43,15 @@ type IPRetrievable interface {
 	String() string
 }
 
+type contextIPRetrievable interface {
+	RetrieveIPWithContext(context.Context) (*ScoredIP, error)
+}
+
 type ScoredIPRetrievable struct {
 	IPRetrievable
 	Weight float64
 	IPv4   bool
 	IPv6   bool
-}
-
-func (s ScoredIP) addWeight(weight float64) ScoredIP {
-	return ScoredIP{s.IP, s.Score * weight}
 }
 
 func (p ScoredIPRetrievable) RetrieveIPWithScoring(ctx context.Context) (*ScoredIPWithMaxScore, error) {
@@ -61,7 +61,7 @@ func (p ScoredIPRetrievable) RetrieveIPWithScoring(ctx context.Context) (*Scored
 	}
 	c := make(chan Result, 1)
 	go func() {
-		scoredIP, err := p.RetrieveIP()
+		scoredIP, err := p.retrieveIP(ctx)
 		c <- Result{scoredIP, err}
 	}()
 	select {
@@ -77,4 +77,11 @@ func (p ScoredIPRetrievable) RetrieveIPWithScoring(ctx context.Context) (*Scored
 		}
 		return nil, r.Err
 	}
+}
+
+func (p ScoredIPRetrievable) retrieveIP(ctx context.Context) (*ScoredIP, error) {
+	if retriever, ok := p.IPRetrievable.(contextIPRetrievable); ok {
+		return retriever.RetrieveIPWithContext(ctx)
+	}
+	return p.RetrieveIP()
 }

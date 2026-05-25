@@ -3,8 +3,9 @@
 package http_resolver
 
 import (
+	"context"
 	"crypto/tls"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 	"strings"
@@ -36,13 +37,22 @@ func scoreOfTLS(t *tls.ConnectionState) float64 {
 }
 
 func (p HTTPDetector) RetrieveIP() (*base.ScoredIP, error) {
+	return p.RetrieveIPWithContext(context.Background())
+}
+
+// RetrieveIPWithContext retrieves an IP address using an HTTP request bound to ctx.
+func (p HTTPDetector) RetrieveIPWithContext(ctx context.Context) (*base.ScoredIP, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, p.URL, nil)
+	if err != nil {
+		return nil, err
+	}
 	client := http.Client{}
-	resp, err := client.Get(p.URL)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
