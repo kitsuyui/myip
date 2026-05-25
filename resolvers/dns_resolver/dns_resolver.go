@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"time"
 
 	"github.com/miekg/dns"
 
@@ -17,6 +18,10 @@ const (
 	QueryTypeA   = "A"
 	QueryTypeTXT = "TXT"
 )
+
+// dnsTimeout limits each DNS exchange so goroutines in base.RetrieveIPWithScoring
+// cannot outlive the caller's context deadline by more than this duration.
+const dnsTimeout = 5 * time.Second
 
 type DNSDetector struct {
 	LookupDomainName string `json:"name"`
@@ -36,7 +41,7 @@ func (p DNSDetector) RetrieveIP() (*base.ScoredIP, error) {
 }
 
 func (p DNSDetector) RetrieveIPByARecord() (*base.ScoredIP, error) {
-	c := dns.Client{}
+	c := dns.Client{Timeout: dnsTimeout}
 	m := dns.Msg{}
 	m.SetQuestion(p.LookupDomainName, dns.TypeA)
 	result, _, err := c.Exchange(&m, p.Resolver)
@@ -54,7 +59,7 @@ func (p DNSDetector) RetrieveIPByARecord() (*base.ScoredIP, error) {
 }
 
 func (p DNSDetector) RetrieveIPByTXTRecord() (*base.ScoredIP, error) {
-	c := dns.Client{}
+	c := dns.Client{Timeout: dnsTimeout}
 	m := dns.Msg{}
 	m.SetQuestion(p.LookupDomainName, dns.TypeTXT)
 	result, _, err := c.Exchange(&m, p.Resolver)
