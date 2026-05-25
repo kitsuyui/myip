@@ -52,7 +52,7 @@ func (p HTTPDetector) RetrieveIPWithContext(ctx context.Context) (*base.ScoredIP
 		return nil, err
 	}
 	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 64))
 	if err != nil {
 		return nil, err
 	}
