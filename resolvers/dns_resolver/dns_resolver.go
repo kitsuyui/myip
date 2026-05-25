@@ -59,6 +59,9 @@ func (p DNSDetector) RetrieveIPByTXTRecord() (*base.ScoredIP, error) {
 		return nil, &base.NotRetrievedError{}
 	}
 	ip := net.ParseIP(txtRecord.Txt[0])
+	if ip == nil {
+		return nil, &base.NotRetrievedError{}
+	}
 	return &base.ScoredIP{IP: ip, Score: 1.0}, nil
 }
 
