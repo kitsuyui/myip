@@ -175,9 +175,10 @@ Options:
 	}
 	sip, err := pickUpFirstItemThatExceededThreshold(sir, duration, threshold)
 	if err == nil {
-		fmt.Print(sip.IP.String())
-		if newline, _ := opts.Bool("--newline"); newline {
-			fmt.Println("")
+		if noNewline, _ := opts.Bool("--no-newline"); noNewline {
+			fmt.Print(sip.IP.String())
+		} else {
+			fmt.Println(sip.IP.String())
 		}
 	} else {
 		if err != nil {
