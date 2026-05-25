@@ -20,9 +20,10 @@ func scoreOfTLS(t *tls.ConnectionState) float64 {
 	if t == nil { // HTTP
 		return 0.1
 	}
-	switch t.Version {
-	case tls.VersionTLS13:
+	if t.Version >= tls.VersionTLS13 {
 		return 1.0
+	}
+	switch t.Version {
 	case tls.VersionTLS12:
 		return 0.8
 	case tls.VersionTLS11:
