@@ -47,6 +47,7 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	if err != nil {
 		return nil, &base.NotRetrievedError{}
 	}
+	defer c.Close()
 	var err2 error
 	if err := c.Do(stun.MustBuild(stun.TransactionID, stun.BindingRequest), func(res stun.Event) {
 		if res.Error != nil {
@@ -62,7 +63,6 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	}); err != nil || err2 != nil {
 		return nil, &base.NotRetrievedError{}
 	}
-	defer c.Close()
 	if scheme == stun.SchemeSecure {
 		return &base.ScoredIP{IP: ip, Score: 1.0}, nil
 	} else {
