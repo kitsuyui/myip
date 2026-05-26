@@ -15,23 +15,19 @@ import (
 
 	"github.com/docopt/docopt-go"
 	"github.com/kitsuyui/myip/resolvers/base"
-	"github.com/kitsuyui/myip/resolvers/dns_resolver"
-	"github.com/kitsuyui/myip/resolvers/http_resolver"
-	"github.com/kitsuyui/myip/resolvers/stun_resolver"
 	"github.com/kitsuyui/myip/resolvers/targets"
 )
 
 var version string
 var verboseMode bool
 
+type namer interface {
+	TypeName() string
+}
+
 func typeName(ipr interface{}) string {
-	switch ipr.(type) {
-	case http_resolver.HTTPDetector:
-		return "http"
-	case dns_resolver.DNSDetector:
-		return "dns"
-	case stun_resolver.STUNDetector:
-		return "stun"
+	if n, ok := ipr.(namer); ok {
+		return n.TypeName()
 	}
 	return fmt.Sprintf("%T", ipr)
 }

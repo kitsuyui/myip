@@ -67,3 +67,7 @@ func (p HTTPDetector) RetrieveIPWithContext(ctx context.Context) (*base.ScoredIP
 func (p HTTPDetector) String() string {
 	return p.URL
 }
+
+func (p HTTPDetector) TypeName() string {
+	return "http"
+}

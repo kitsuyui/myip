@@ -87,3 +87,7 @@ func (p DNSDetector) String() string {
 	}
 	return fmt.Sprintf("%s,%s,%s", qt, p.LookupDomainName, p.Resolver)
 }
+
+func (p DNSDetector) TypeName() string {
+	return "dns"
+}
