@@ -71,7 +71,7 @@ func IPRetrievables() []base.ScoredIPRetrievable {
 
 func IPv4Retrievables() (sir []base.ScoredIPRetrievable) {
 	for _, sipr := range IPRetrievables() {
-		if sipr.IPv4 && !sipr.IPv6 {
+		if sipr.IPv4 {
 			sir = append(sir, sipr)
 		}
 	}
