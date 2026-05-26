@@ -73,3 +73,7 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 func (p STUNDetector) String() string {
 	return fmt.Sprintf("%s", p.Host)
 }
+
+func (p STUNDetector) TypeName() string {
+	return "stun"
+}
