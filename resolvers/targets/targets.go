@@ -60,7 +60,7 @@ func IPRetrievables() []base.ScoredIPRetrievable {
 		// Cloudflare STUN servers
 		// https://developers.cloudflare.com/realtime/turn/
 		scored{IPRetrievable: stun{Host: "stun:stun.cloudflare.com:3478", Protocol: "udp"}, Weight: 1.0, IPv4: true, IPv6: false},
-		scored{IPRetrievable: stun{Host: "stuns:turn.cloudflare.com:3478", Protocol: "udp"}, Weight: 1.0, IPv4: true, IPv6: false},
+		scored{IPRetrievable: stun{Host: "stuns:turn.cloudflare.com:3478", Protocol: "tcp"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: stun{Host: "stuns:turn.cloudflare.com:5349", Protocol: "tcp"}, Weight: 1.0, IPv4: true, IPv6: false},
 
 		//stuns:turn.cloudflare.com:5349
