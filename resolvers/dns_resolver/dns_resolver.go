@@ -51,8 +51,8 @@ func (p DNSDetector) RetrieveIPByARecord() (*base.ScoredIP, error) {
 	if len(result.Answer) == 0 {
 		return nil, &base.NotRetrievedError{}
 	}
-	arecord := result.Answer[0].(*dns.A)
-	if arecord.A == nil {
+	arecord, ok := result.Answer[0].(*dns.A)
+	if !ok || arecord.A == nil {
 		return nil, &base.NotRetrievedError{}
 	}
 	return &base.ScoredIP{IP: arecord.A, Score: 1.0}, nil
@@ -69,8 +69,8 @@ func (p DNSDetector) RetrieveIPByTXTRecord() (*base.ScoredIP, error) {
 	if len(result.Answer) == 0 {
 		return nil, &base.NotRetrievedError{}
 	}
-	txtRecord := result.Answer[0].(*dns.TXT)
-	if len(txtRecord.Txt) == 0 {
+	txtRecord, ok := result.Answer[0].(*dns.TXT)
+	if !ok || len(txtRecord.Txt) == 0 {
 		return nil, &base.NotRetrievedError{}
 	}
 	ip := net.ParseIP(txtRecord.Txt[0])
