@@ -2,14 +2,12 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"io"
 
 	"log"
 	"net"
 	"os"
-	"strconv"
 	"sync"
 	"time"
 
@@ -121,12 +119,6 @@ func pickWinner(scores map[string]float64, sumOfWeight float64, threshold float6
 	return &base.ScoredIP{IP: net.ParseIP(winnerIP), Score: winnerScore}, true
 }
 
-var timeout = flag.Duration("timeout", 3*time.Second, "Timeout duration.")
-
-func init() {
-	flag.DurationVar(timeout, "t", 3*time.Second, "Timeout duration.")
-}
-
 func main() {
 
 	usage := `myip
@@ -175,15 +167,9 @@ Options:
 		log.Fatal(err)
 	}
 
-	var duration time.Duration
-	f, err := strconv.ParseFloat(timeoutStr, 64)
+	duration, err := time.ParseDuration(timeoutStr)
 	if err != nil {
-		duration, err = time.ParseDuration(timeoutStr)
-		if err != nil {
-			log.Fatal(err)
-		}
-	} else {
-		duration = time.Duration(f) * time.Second
+		log.Fatal(err)
 	}
 	sip, err := pickUpFirstItemThatExceededThreshold(sir, duration, threshold)
 	if err == nil {
