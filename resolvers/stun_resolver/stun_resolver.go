@@ -5,7 +5,6 @@ package stun_resolver
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net"
 	"strconv"
 	"time"
@@ -51,6 +50,7 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	}
 	c, err := stun.NewClient(conn)
 	if err != nil {
+		conn.Close()
 		return nil, &base.NotRetrievedError{}
 	}
 	defer c.Close()
@@ -77,7 +77,7 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 }
 
 func (p STUNDetector) String() string {
-	return fmt.Sprintf("%s", p.Host)
+	return p.Host
 }
 
 func (p STUNDetector) TypeName() string {
