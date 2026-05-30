@@ -5,6 +5,9 @@ import (
 )
 
 func TestDNSARecordSuccess(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping live network test in short mode")
+	}
 	d := DNSDetector{LookupDomainName: "myip.opendns.com.", Resolver: "208.67.222.222:53"}
 	ip, err := d.RetrieveIP()
 	if err != nil {
@@ -27,6 +30,9 @@ func TestDNSARecordFailWhenDNSServerIsDownOrNotExists(t *testing.T) {
 }
 
 func TestDNSARecordFailWhenInvalidLookup(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping live network test in short mode")
+	}
 	d := DNSDetector{LookupDomainName: "dummy.opendns.com.", Resolver: "resolver1.opendns.com:53"}
 	ip, err := d.RetrieveIP()
 	if err == nil {
@@ -38,6 +44,9 @@ func TestDNSARecordFailWhenInvalidLookup(t *testing.T) {
 }
 
 func TestDNSTXTRecordSuccess(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping live network test in short mode")
+	}
 	d := DNSDetector{LookupDomainName: "o-o.myaddr.l.google.com.", Resolver: "ns1.google.com:53", QueryType: "TXT"}
 	ip, err := d.RetrieveIP()
 	if err != nil {
@@ -60,6 +69,9 @@ func TestDNSTXTRecordFailWhenDNSServerIsDownOrNotExists(t *testing.T) {
 }
 
 func TestDNSTXTRecordFailWhenInvalidLookup(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping live network test in short mode")
+	}
 	d := DNSDetector{LookupDomainName: "dummy.myaddr.l.google.com.", Resolver: "ns1.google.com:53", QueryType: "TXT"}
 	ip, err := d.RetrieveIP()
 	if err == nil {
