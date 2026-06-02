@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/kitsuyui/myip/resolvers/base"
-	"gortc.io/stun"
+	"github.com/pion/stun"
 )
 
 // dialTimeout limits each STUN dial so goroutines in base.RetrieveIPWithScoring
@@ -34,7 +34,7 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	scheme := uri.Scheme
 	address := uri.Host + ":" + strconv.Itoa(uri.Port)
 	dialer := &net.Dialer{Timeout: dialTimeout}
-	if scheme == stun.SchemeSecure {
+	if scheme == stun.SchemeTypeSTUNS {
 		cfg := &tls.Config{
 			ServerName: uri.Host,
 		}
@@ -69,7 +69,7 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	}); err != nil || err2 != nil {
 		return nil, &base.NotRetrievedError{}
 	}
-	if scheme == stun.SchemeSecure {
+	if scheme == stun.SchemeTypeSTUNS {
 		return &base.ScoredIP{IP: ip, Score: 1.0}, nil
 	} else {
 		return &base.ScoredIP{IP: ip, Score: 0.1}, nil
