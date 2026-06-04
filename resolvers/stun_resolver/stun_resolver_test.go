@@ -10,6 +10,9 @@ import (
 )
 
 func TestSTUNSuccess(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping live network test in short mode")
+	}
 	h := STUNDetector{Host: "stun:stun.cloudflare.com:3478", Protocol: "udp"}
 	ip, err := h.RetrieveIP()
 	if err != nil {
@@ -21,6 +24,9 @@ func TestSTUNSuccess(t *testing.T) {
 }
 
 func TestSTUNSSuccess(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping live network test in short mode")
+	}
 	h := STUNDetector{Host: "stuns:turn.cloudflare.com:5349", Protocol: "tcp"}
 	ip, err := h.RetrieveIP()
 	if err != nil {
