@@ -46,7 +46,9 @@ func (p HTTPDetector) RetrieveIPWithContext(ctx context.Context) (*base.ScoredIP
 	if err != nil {
 		return nil, err
 	}
-	client := http.Client{}
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport.MaxResponseHeaderBytes = 4096
+	client := http.Client{Transport: transport}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
