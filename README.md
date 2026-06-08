@@ -14,7 +14,7 @@ myip supports various way to IP resolving.
 - DNS
 - STUN
 
-c.f. https://github.com/kitsuyui/myip/blob/master/targets/targets.go
+See the [target list](resolvers/targets/targets.go) for the bundled resolvers.
 
 And if many of these targets answer same, then it show as true IP.
 So this aims to be resistant for man-in-the-middle-attack or temporary service down.
@@ -101,12 +101,12 @@ Options:
 
 # Installation
 
-## go get
+## Go install
 
-If you have Golang environment, install with just doing this;
+If you have a Go environment, install the latest release with:
 
 ```console
-$ go get github.com/kitsuyui/myip
+$ go install github.com/kitsuyui/myip@latest
 ```
 
 ## Install static binary releases
@@ -145,8 +145,8 @@ $ brew install myip
 # Build
 
 ```console
-$ go get -d ./...
-$ go build
+$ go mod download
+$ go build ./...
 ```
 
 ## LICENSE
