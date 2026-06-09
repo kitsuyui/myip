@@ -149,6 +149,23 @@ $ go mod download
 $ go build ./...
 ```
 
+## Development
+
+This project uses [lefthook](https://github.com/evilmartians/lefthook) to run the same checks as CI locally.
+
+### Setup
+
+```console
+$ lefthook install
+```
+
+### Hooks
+
+- **pre-commit**: runs `go vet ./...` to catch issues before each commit.
+- **pre-push**: runs `go vet ./...` and `go test ./...` before each push.
+
+CI still runs the full suite on every pull request and push to main — the hooks bring that feedback earlier, to your local machine.
+
 ## LICENSE
 
 ### Source
