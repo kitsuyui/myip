@@ -1,5 +1,6 @@
 # https://github.com/k1LoW/octocov?tab=readme-ov-file#configuration
 coverage:
+  acceptable: current >= 55%
   paths:
     - coverage.out
 codeToTestRatio:
