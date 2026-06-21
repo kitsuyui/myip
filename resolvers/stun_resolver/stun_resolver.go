@@ -1,7 +1,7 @@
 // STUN Resolver
 // Resolve IP address by STUN protocol
 // c.f. https://en.wikipedia.org/wiki/STUN
-package stun_resolver
+package stunresolver
 
 import (
 	"crypto/tls"

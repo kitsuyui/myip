@@ -1,4 +1,4 @@
-package stun_resolver
+package stunresolver
 
 import (
 	"context"
