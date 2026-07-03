@@ -1,4 +1,4 @@
-package dns_resolver
+package dnsresolver
 
 import (
 	"testing"

@@ -1,6 +1,6 @@
 // DNS Resolver
 // Resolve IP address by DNS query
-package dns_resolver
+package dnsresolver
 
 import (
 	"fmt"

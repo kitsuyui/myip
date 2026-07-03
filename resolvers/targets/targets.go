@@ -9,9 +9,9 @@ import (
 
 func IPRetrievables() []base.ScoredIPRetrievable {
 	type scored = base.ScoredIPRetrievable
-	type http = http_resolver.HTTPDetector
-	type dns = dns_resolver.DNSDetector
-	type stun = stun_resolver.STUNDetector
+	type http = httpresolver.HTTPDetector
+	type dns = dnsresolver.DNSDetector
+	type stun = stunresolver.STUNDetector
 	return []base.ScoredIPRetrievable{
 		scored{IPRetrievable: http{URL: "http://inet-ip.info/ip"}, Weight: 1.0, IPv4: true, IPv6: false},
 		scored{IPRetrievable: http{URL: "http://whatismyip.akamai.com/"}, Weight: 1.0, IPv4: true, IPv6: false},

@@ -1,4 +1,4 @@
-package http_resolver
+package httpresolver
 
 import (
 	"context"
