@@ -14,7 +14,7 @@ require (
 	github.com/pion/dtls/v2 v2.2.7 // indirect
 	github.com/pion/logging v0.2.2 // indirect
 	github.com/pion/transport/v2 v2.2.1 // indirect
-	golang.org/x/crypto v0.51.0 // indirect
+	golang.org/x/crypto v0.52.0 // indirect
 	golang.org/x/mod v0.32.0 // indirect
 	golang.org/x/net v0.55.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
