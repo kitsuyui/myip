@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 
 	"log"
 	"net"
@@ -28,6 +29,13 @@ func typeName(ipr interface{}) string {
 		return n.TypeName()
 	}
 	return fmt.Sprintf("%T", ipr)
+}
+
+func validateThreshold(threshold float64) error {
+	if math.IsNaN(threshold) || math.IsInf(threshold, 0) || threshold < 0 || threshold > 1 {
+		return fmt.Errorf("threshold must be between 0 and 1")
+	}
+	return nil
 }
 
 func pickUpFirstItemThatExceededThreshold(siprs []base.ScoredIPRetrievable, timeout time.Duration, threshold float64) (*base.ScoredIP, error) {
@@ -135,7 +143,7 @@ Options:
  -6 --ipv6               						 Prefer IPv6.
  -n --newline            						 Show IP with newline.
  -N --no-newline         						 Show IP without newline.
- -T=<rate> --threshold=<rate>  			 Threshold that must be exceeded by weighted votes [default: 0.6].
+ -T=<rate> --threshold=<rate>  			 Threshold in [0.0, 1.0] that must be exceeded by weighted votes [default: 0.6].
  -t=<duration> --timeout=<duration>  Timeout [default: 3s].
 `
 	opts, err := docopt.ParseDoc(usage)
@@ -159,6 +167,9 @@ Options:
 	}
 	threshold, err := opts.Float64("--threshold")
 	if err != nil {
+		log.Fatal(err)
+	}
+	if err := validateThreshold(threshold); err != nil {
 		log.Fatal(err)
 	}
 
