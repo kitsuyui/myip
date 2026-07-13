@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"net"
 	"testing"
 	"time"
@@ -59,6 +60,32 @@ func TestPickUpRequiresScoreToExceedThreshold(t *testing.T) {
 	}
 	if _, ok := err.(*base.NotRetrievedError); !ok {
 		t.Fatalf("expected NotRetrievedError, got %T", err)
+	}
+}
+
+func TestValidateThreshold(t *testing.T) {
+	cases := []struct {
+		name      string
+		threshold float64
+		wantErr   bool
+	}{
+		{name: "below range", threshold: -0.01, wantErr: true},
+		{name: "above range", threshold: 1.01, wantErr: true},
+		{name: "minimum boundary", threshold: 0, wantErr: false},
+		{name: "maximum boundary", threshold: 1, wantErr: false},
+		{name: "nan threshold", threshold: math.NaN(), wantErr: true},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			err := validateThreshold(tc.threshold)
+			if tc.wantErr && err == nil {
+				t.Fatalf("expected error for threshold %v", tc.threshold)
+			}
+			if !tc.wantErr && err != nil {
+				t.Fatalf("did not expect error for threshold %v: %v", tc.threshold, err)
+			}
+		})
 	}
 }
 
