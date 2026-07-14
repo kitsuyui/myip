@@ -75,7 +75,7 @@ $ myip -6
 2001:0db8:0000:0042:0000:8a2e:0370:7334
 ```
 
-If your machine doesn't have IPv6 address, fallbacks to IPv4.
+Note: `-6` uses only IPv6-capable resolvers and does not fall back to IPv4 if IPv6 is unavailable.
 
 ## Help
 
