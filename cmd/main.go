@@ -20,6 +20,23 @@ import (
 var version string
 var verboseMode bool
 
+const usageText = `myip
+
+Usage:
+ myip [-v | --verbose] [-4 | -6] [-N | --no-newline] [-T=<rate>] [-t=<duration>]
+ myip (--help | --version)
+
+Options:
+ -h --help               						 Show this screen.
+ -V --version            						 Show version.
+ -v --verbose            						 Verbose mode.
+ -4 --ipv4               						 Prefer IPv4.
+ -6 --ipv6               						 Prefer IPv6.
+ -N --no-newline         						 Show IP without newline.
+ -T=<rate> --threshold=<rate>  			 Threshold in [0.0, 1.0] that must be exceeded by weighted votes [default: 0.6].
+ -t=<duration> --timeout=<duration>  Timeout [default: 3s].
+`
+
 type namer interface {
 	TypeName() string
 }
@@ -127,26 +144,17 @@ func pickWinner(scores map[string]float64, sumOfWeight float64, threshold float6
 	return &base.ScoredIP{IP: net.ParseIP(winnerIP), Score: winnerScore}, true
 }
 
+func writeIP(out io.Writer, ip string, noNewline bool) error {
+	if noNewline {
+		_, err := fmt.Fprint(out, ip)
+		return err
+	}
+	_, err := fmt.Fprintln(out, ip)
+	return err
+}
+
 func main() {
-
-	usage := `myip
-
-Usage:
- myip [-v | --verbose] [-4 | -6] [-T=<rate>] [-t=<duration>]
- myip (--help | --version)
-
-Options:
- -h --help               						 Show this screen.
- -V --version            						 Show version.
- -v --verbose            						 Verbose mode.
- -4 --ipv4               						 Prefer IPv4.
- -6 --ipv6               						 Prefer IPv6.
- -n --newline            						 Show IP with newline.
- -N --no-newline         						 Show IP without newline.
- -T=<rate> --threshold=<rate>  			 Threshold in [0.0, 1.0] that must be exceeded by weighted votes [default: 0.6].
- -t=<duration> --timeout=<duration>  Timeout [default: 3s].
-`
-	opts, err := docopt.ParseDoc(usage)
+	opts, err := docopt.ParseDoc(usageText)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -185,9 +193,13 @@ Options:
 	sip, err := pickUpFirstItemThatExceededThreshold(sir, duration, threshold)
 	if err == nil {
 		if noNewline, _ := opts.Bool("--no-newline"); noNewline {
-			fmt.Print(sip.IP.String())
+			if err := writeIP(os.Stdout, sip.IP.String(), true); err != nil {
+				log.Fatal(err)
+			}
 		} else {
-			fmt.Println(sip.IP.String())
+			if err := writeIP(os.Stdout, sip.IP.String(), false); err != nil {
+				log.Fatal(err)
+			}
 		}
 	} else {
 		if err != nil {

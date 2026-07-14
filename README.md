@@ -26,21 +26,6 @@ $ myip
 203.0.113.2
 ```
 
-## Output with newline by (`-n` or `--newline`) option
-
-This option gives output with ending newline character.
-
-```console
-$ myip
-203.0.113.2$
-```
-
-```console
-$ myip -n
-203.0.113.2
-$
-```
-
 ## Version
 
 ```console
@@ -84,7 +69,7 @@ $ myip -h
 myip
 
 Usage:
- myip [-v | --verbose] [-4 | -6] [-T=<rate>] [-t=<duration>]
+ myip [-v | --verbose] [-4 | -6] [-N | --no-newline] [-T=<rate>] [-t=<duration>]
  myip (--help | --version)
 
 Options:
@@ -93,7 +78,6 @@ Options:
  -v --verbose            						 Verbose mode.
  -4 --ipv4               						 Prefer IPv4.
  -6 --ipv6               						 Prefer IPv6.
- -n --newline            						 Show IP with newline.
  -N --no-newline         						 Show IP without newline.
  -T=<rate> --threshold=<rate>  			 Threshold in [0.0, 1.0] that must be exceeded by weighted votes [default: 0.6].
  -t=<duration> --timeout=<duration>  Timeout [default: 3s].
