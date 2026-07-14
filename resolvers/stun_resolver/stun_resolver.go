@@ -17,6 +17,12 @@ import (
 // cannot outlive the caller's context deadline by more than this duration.
 const dialTimeout = 5 * time.Second
 
+var tlsConfigForHost = func(host string) *tls.Config {
+	return &tls.Config{
+		ServerName: host,
+	}
+}
+
 type STUNDetector struct {
 	Host     string `json:"host"`
 	Protocol string `json:"protocol"`
@@ -35,9 +41,7 @@ func (p STUNDetector) RetrieveIP() (*base.ScoredIP, error) {
 	address := uri.Host + ":" + strconv.Itoa(uri.Port)
 	dialer := &net.Dialer{Timeout: dialTimeout}
 	if scheme == stun.SchemeTypeSTUNS {
-		cfg := &tls.Config{
-			ServerName: uri.Host,
-		}
+		cfg := tlsConfigForHost(uri.Host)
 		conn, err = tls.DialWithDialer(dialer, p.Protocol, address, cfg)
 		if err != nil {
 			return nil, &base.NotRetrievedError{}
