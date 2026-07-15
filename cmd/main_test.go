@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"math"
 	"net"
+	"strings"
 	"testing"
 	"time"
 
@@ -137,4 +139,35 @@ func TestPickUpDoesNotPanicOnLateResultAfterWinner(t *testing.T) {
 	}
 
 	time.Sleep(50 * time.Millisecond)
+}
+
+func TestUsageTextDoesNotExposeRedundantNewlineFlag(t *testing.T) {
+	if strings.Contains(usageText, "--newline") {
+		t.Fatalf("usage text must not expose redundant newline flag: %q", usageText)
+	}
+	if !strings.Contains(usageText, "--no-newline") {
+		t.Fatalf("usage text must expose no-newline flag: %q", usageText)
+	}
+}
+
+func TestWriteIP(t *testing.T) {
+	t.Run("default output ends with newline", func(t *testing.T) {
+		var buf bytes.Buffer
+		if err := writeIP(&buf, "192.0.2.1", false); err != nil {
+			t.Fatalf("writeIP returned error: %v", err)
+		}
+		if got := buf.String(); got != "192.0.2.1\n" {
+			t.Fatalf("unexpected output: %q", got)
+		}
+	})
+
+	t.Run("no-newline output omits trailing newline", func(t *testing.T) {
+		var buf bytes.Buffer
+		if err := writeIP(&buf, "192.0.2.1", true); err != nil {
+			t.Fatalf("writeIP returned error: %v", err)
+		}
+		if got := buf.String(); got != "192.0.2.1" {
+			t.Fatalf("unexpected output: %q", got)
+		}
+	})
 }
