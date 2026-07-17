@@ -4,11 +4,15 @@ import (
 	"bytes"
 	"math"
 	"net"
+	"os"
+	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/kitsuyui/myip/resolvers/base"
+	"github.com/kitsuyui/myip/resolvers/targets"
 )
 
 type fakeRetriever struct {
@@ -170,4 +174,41 @@ func TestWriteIP(t *testing.T) {
 			t.Fatalf("unexpected output: %q", got)
 		}
 	})
+}
+
+func TestSelectRetrievablesUsesIPv6OnlyTargetsWithoutIPv4Fallback(t *testing.T) {
+	selected := selectRetrievables(false, true)
+	ipv6Only := targets.IPv6Retrievables()
+	allTargets := targets.IPRetrievables()
+
+	if len(selected) == 0 {
+		t.Fatal("expected IPv6-capable targets")
+	}
+	if !slices.Equal(selected, ipv6Only) {
+		t.Fatal("expected --ipv6 selection to match IPv6-capable targets exactly")
+	}
+	if len(selected) >= len(allTargets) {
+		t.Fatal("expected --ipv6 selection to be narrower than the default target set")
+	}
+	for _, retrievable := range selected {
+		if !retrievable.IPv6 {
+			t.Fatalf("found non-IPv6 target in --ipv6 selection: %+v", retrievable)
+		}
+	}
+}
+
+func TestReadmeDocumentsIPv6OnlyContractWithoutFallback(t *testing.T) {
+	readmePath := filepath.Join("..", "README.md")
+	content, err := os.ReadFile(readmePath)
+	if err != nil {
+		t.Fatalf("read README: %v", err)
+	}
+	text := string(content)
+
+	if !strings.Contains(text, "does not fall back to IPv4") {
+		t.Fatal("README must document that -6 does not fall back to IPv4")
+	}
+	if strings.Contains(text, "fallbacks to IPv4") {
+		t.Fatal("README must not claim that -6 falls back to IPv4")
+	}
 }

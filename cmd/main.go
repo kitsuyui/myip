@@ -153,6 +153,16 @@ func writeIP(out io.Writer, ip string, noNewline bool) error {
 	return err
 }
 
+func selectRetrievables(ipv4 bool, ipv6 bool) []base.ScoredIPRetrievable {
+	if ipv4 {
+		return targets.IPv4Retrievables()
+	}
+	if ipv6 {
+		return targets.IPv6Retrievables()
+	}
+	return targets.IPRetrievables()
+}
+
 func main() {
 	opts, err := docopt.ParseDoc(usageText)
 	if err != nil {
@@ -162,14 +172,9 @@ func main() {
 		println(version)
 		return
 	}
-	var sir []base.ScoredIPRetrievable
-	if ipv4, _ := opts.Bool("--ipv4"); ipv4 {
-		sir = targets.IPv4Retrievables()
-	} else if ipv6, _ := opts.Bool("--ipv6"); ipv6 {
-		sir = targets.IPv6Retrievables()
-	} else {
-		sir = targets.IPRetrievables()
-	}
+	ipv4, _ := opts.Bool("--ipv4")
+	ipv6, _ := opts.Bool("--ipv6")
+	sir := selectRetrievables(ipv4, ipv6)
 	if verbose, _ := opts.Bool("--verbose"); verbose {
 		verboseMode = true
 	}
