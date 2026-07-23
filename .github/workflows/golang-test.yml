@@ -40,6 +40,12 @@ jobs:
       - name: test
         run: go test -v -cover -race -covermode=atomic -short -coverprofile=coverage.out ./...
 
+      - name: upload coverage artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: coverage-out
+          path: coverage.out
+
       - name: build
         run: go build ./...
 
@@ -49,3 +55,28 @@ jobs:
           distribution: goreleaser
           version: "~> v2"
           args: build --snapshot --clean
+
+  octocov:
+    name: octocov
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: download coverage artifact
+        uses: actions/download-artifact@c850b930e2b3fd3b24871e2ef4f6fd41e5d87a2a # v5
+        with:
+          name: coverage-out
+
+      # See also: https://github.com/k1LoW/octocov-action
+      - name: Report coverage with octocov
+        uses: k1LoW/octocov-action@b3b6ee60482a667950f87553abf1df63217235d9 # v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          config: .octocov.yml
