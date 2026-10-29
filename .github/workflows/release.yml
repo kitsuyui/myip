@@ -33,7 +33,7 @@ jobs:
         with:
           distribution: goreleaser
           version: "~> v2"
-          args: ${{ github.event_name == 'pull_request' && 'release --snapshot --clean' || 'release --clean' }}
+          args: ${{ github.event_name == 'pull_request' && 'release --snapshot --clean' || 'release --skip=publish --clean' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -57,7 +57,7 @@ jobs:
         with:
           name: release-assets-${{ github.sha }}
           merge-multiple: true
-          path: dist/*
+          path: dist
 
       - name: List
         run: find ./dist
@@ -72,4 +72,4 @@ jobs:
         if: github.event_name == 'release' && !github.event.release.prerelease
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
-          files: ./dist/**/*
+          files: ./dist/*
